@@ -1,0 +1,59 @@
+.navbar.navbar-light.navbar-expand-md {
+  background-color:black;
+}
+
+.navbar-light .navbar-brand {
+  color:white;
+}
+
+c {
+}
+
+.navbar-toggler:not(:disabled):not(.disabled) {
+  color:white;
+}
+
+.navbar-expand-md .navbar-nav {
+  color:white;
+}
+
+.nav-item {
+  color:white;
+}
+
+.navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show > .nav-link {
+  color:white;
+}
+
+.col.item {
+}
+
+h1.item-name {
+  text-align:center;
+}
+
+.col.item.flexbox {
+  text-align:center;
+}
+
+.container.buttons-container {
+  padding-top:2rem;
+}
+
+.row.items-row-header {
+  padding:1rem 0.3rem;
+}
+
+.col {
+}
+
+.important-item {
+  color:white;
+  background-color:black;
+}
+
+.col.item-box {
+  background-color:rgb(231,231,231);
+  margin:0.3rem;
+}
+
