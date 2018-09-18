@@ -16,81 +16,62 @@
                 id="navcol-1"></div>
         </div>
     </nav>
+    <div class="container indicator">
+        <div class="row">
+            <div class="col now">
+                {% if now_pattern %}
+                    <h1>NOW: {{now_pattern}}</h1>
+                {% else %}
+                    <h1>NOW: ERROR_バグが発生しました</h1>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <div class="container buttons-container">
-        <div class="row items-row-header">
-            <div class="col-md-5 important-item">
-                <h1 class="item-name">ALL OFF</h1>
-            </div>
-            <div class="col-md-5 offset-md-2 important-item">
-                <h1 class="item-name">ALL WHITE</h1>
-            </div>
-        </div>
         <div class="row items-row">
             <div class="col item-box">
-                <h1 class="item-name">Title</h1>
+                <form method="post" action="/set" name="form_clear">
+                    <input class="form-control" type="hidden" name="pattern" value="clear">
+                    <a href="javascript:form_clear.submit()">
+                        <button class="btn btn-primary btn-pattern important" type="button">ALL CLEAR</button>
+                    </a>
+                </form>
             </div>
             <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
+                <form method="post" action="/set" name="form_allwhite">
+                    <input class="form-control" type="hidden" name="pattern" value="allwhite">
+                    <a href="javascript:form_allwhite.submit()">
+                        <button class="btn btn-primary btn-pattern important" type="button">ALL WHITE</button>
+                    </a>
+                </form>
             </div>
         </div>
-        <div class="row items-row">
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
+        <div class="row">
+            <div class="col">
+                <hr>
             </div>
         </div>
-        <div class="row items-row">
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-        </div>
-        <div class="row items-row">
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-        </div>
-        <div class="row items-row">
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-        </div>
-        <div class="row items-row">
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-            <div class="col item-box">
-                <h1 class="item-name">Title</h1>
-            </div>
-        </div>
+        {% if pattern_list %}
+            {% for i in range(0, pattern_length_div_by_3_int+1) %}
+                <div class="row items-row">
+                {% for j in range(0, 3) %}
+                    <div class="col item-box">
+                        <form method="post" action="/set" name="form{{i*3+j}}">
+                            <input class="form-control" type="hidden" name="pattern" value="{{pattern_list[i*3+j]}}">
+                            <a href="javascript:form{{i*3+j}}.submit()" class="submit-button-link">
+                                {% if pattern_list[i*3+j] %}
+                                    <button class="btn btn-primary btn-pattern btn-gray" type="button">{{pattern_list[i*3+j]}}</button>
+                                {% endif %}
+                            </a>
+                        </form>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}  
+        {% else %}
+            <h1>ERROR バグが発生しました</h1>
+        {% endif %}
+        
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
