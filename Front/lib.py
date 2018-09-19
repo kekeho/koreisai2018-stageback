@@ -27,25 +27,27 @@ class LEDObject():
 
     def __init__(self):
         self.strip = Adafruit_NeoPixel(
-            LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, 
+            LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,
             LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         self.strip.begin()
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
         self.color('ffffff')
+        self.now_status = 'on'
 
     def off(self):
         """"turn all LED OFF"""
         self.color('000000')
+        self.now_status = 'on'
 
     def color(self, hex_color: str, *position: int):
         """set LED color with hex (RGB)
         default: ALL LEDs color turns hex value
         if you set potition, only a LED in the position turns hex value"""
-        color = Color(int(hex_color[2:4], base=16), 
-                        int(hex_color[:2], base=16), 
-                        int(hex_color[4:6], base=16))
+        color = Color(int(hex_color[2:4], base=16),
+                      int(hex_color[:2], base=16),
+                      int(hex_color[4:6], base=16))
         if(position):
             # turn to this color only 1 pixel
             self.strip.setPixelColor(position[0], color)
@@ -53,14 +55,14 @@ class LEDObject():
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, color)
         self.strip.show()
-       
+        self.now_status = 'on'
 
     def animation(self, pattern: str):
         """set animation
         Return:
             1 or -1 (Success or Failure)
         """
-        pass
+        self.now_status = 'on'
 
 
 def main():
