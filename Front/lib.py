@@ -32,8 +32,8 @@ class LEDObject():
         self.strip.begin()
 
     def on(self):
-        """turn all LED ON"""
-        pass
+        """turn all LED ON (WHITE/0xffffff)"""
+        self.color('ffffff')
 
     def off(self):
         """"turn all LED OFF"""
@@ -66,6 +66,8 @@ class LEDObject():
 def main():
     led = LEDObject()
     led.off()
+    time.sleep(1)
+    led.on()
     led.color('ff0000', 3)
 
 
