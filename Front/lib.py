@@ -37,7 +37,7 @@ class LEDObject():
 
     def off(self):
         """"turn all LED OFF"""
-        pass
+        self.color('000000')
 
     def color(self, hex_color: str, *position: int):
         """set LED color with hex (RGB)
@@ -65,7 +65,7 @@ class LEDObject():
 
 def main():
     led = LEDObject()
-    led.color('ffffff')
+    led.off()
     led.color('ff0000', 3)
 
 
