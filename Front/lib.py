@@ -46,10 +46,14 @@ class LEDObject():
         color = Color(int(hex_color[2:4], base=16), 
                         int(hex_color[:2], base=16), 
                         int(hex_color[4:6], base=16))
-        for i in range(self.strip.numPixels()):
-            self.strip.setPixelColor(i, color)
+        if(position):
+            # turn to this color only 1 pixel
+            self.strip.setPixelColor(position[0], color)
+        else:
+            for i in range(self.strip.numPixels()):
+                self.strip.setPixelColor(i, color)
         self.strip.show()
-        #TODO: positionの実装
+       
 
     def animation(self, pattern: str):
         """set animation
@@ -62,6 +66,7 @@ class LEDObject():
 def main():
     led = LEDObject()
     led.color('ffffff')
+    led.color('ff0000', 3)
 
 
 if __name__ == '__main__':
