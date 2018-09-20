@@ -18,12 +18,33 @@ LED_BRIGHTNESS = 100     # Set to 0 for darkest and 255 for brightest
 LED_INVERT = False
 LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
+def int_to_hexcolor(num: int, *mode: str):
+    """Convert int to hex color
+    arg:
+        num: int (base=10)
+    return:
+        hexcolor string like 'ffba78'
+    """
+    blue = num % 16**2
+    num = int(num / 16**2)
+    green = num % 16**2
+    num = int(num / 16**2)
+    red = num % 16**2
+    color = {'r': red, 'g': green, 'b': blue}
+    if 'lib' in mode:
+        # ライブラリのカラーコードだったら(GRB)
+        return '{g:02x}{r:02x}{b:02x}'.format(**color)
+    else:
+        return '{r:02x}{g:02x}{b:02x}'.format(**color)
+
 
 class LEDObject():
     """Koreisai StageBack LED-Logo Object
     """
     now_status = 'off'  # ON or OFF
     now_pattern = None  # animation pattern
+    now_color = []
+    string = {'P-inside': range(0, 56)}
 
     def __init__(self):
         self.strip = Adafruit_NeoPixel(
@@ -49,18 +70,25 @@ class LEDObject():
         if(position):
             # turn to this color only 1 pixel
             self.strip.setPixelColor(position[0], color)
+            self.now_color[position[0]] = int_to_hexcolor(color, 'lib')
+            print(self.now_color) #debug
         else:
+            self.now_color = [] #リセット
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, color)
+                self.now_color.append(int_to_hexcolor(color, 'lib'))
         self.strip.show()
-       
+        self.now_status = 'on'
+        print(self.now_color) #debug
 
     def animation(self, pattern: str):
         """set animation
-        Return:
-            1 or -1 (Success or Failure)
         """
         pass
+        # if pattern is 'blink':
+        #     led.off
+
+        # self.now_status = 'on'
 
 
 def main():
