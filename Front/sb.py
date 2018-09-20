@@ -20,12 +20,15 @@ def index():
 def set_pattern():
     global now_pattern
     global led
+
     request_pattern = request.form['pattern']
     if request_pattern == 'clear':
         # LEDすべてOFF
         led.off()
     elif request_pattern == 'allwhite':
         led.on()
+    else:
+        led.animation(request_pattern)
 
     print('GET:', request.form['pattern'])  # debug
     # TODO: 余裕があれば、実際にRaspberry Pi側から完了信号が届いてからnow_patternを更新
