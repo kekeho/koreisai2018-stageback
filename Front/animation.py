@@ -9,8 +9,7 @@ def animation_blink(led: LEDObject, sleepsec=0.5, hexcolor='ffffff'):
     while True:
         led.off()
         time.sleep(sleepsec)
-
-        led.color(hexcolor)
+        led.color(led.now_color)
         time.sleep(sleepsec)
 
 

@@ -5,7 +5,7 @@ from lib import LEDObject
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder='./templates/assets')
-pattern_list = ['blink', 'hoge', 'fuga', 'nyan', 'kiee']
+pattern_list = ['blink', 'blink-2x', 'fuga', 'nyan', 'kiee']
 
 now_pattern = ' '
 led = LEDObject()
@@ -27,6 +27,10 @@ def set_pattern():
         led.off()
     elif request_pattern == 'allwhite':
         led.on()
+    elif request_pattern == 'blink-2x':
+        led.animation('blink', option1=0.5/2)
+    elif request_pattern == 'blink-4x':
+        led.animation('blink', option1=0.5/2)
     else:
         led.animation(request_pattern)
 

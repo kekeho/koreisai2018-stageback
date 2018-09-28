@@ -42,6 +42,13 @@ def int_to_hexcolor(num: int, *mode: str):
 
 class LEDObject():
     """Koreisai StageBack LED-Logo Object
+    P 外側147 内側47
+    a 外側130 内側66
+    i 外側82 内側35
+    n 167
+    t 120
+    e 外側158 内側37
+    r 102
     """
     now_status = 'off'  # ON or OFF
     now_pattern = None  # animation pattern
@@ -67,24 +74,43 @@ class LEDObject():
         self.color('000000')
         self.now_status = 'on'
 
-    def color(self, hex_color: str, *position: int):
+    def color(self, hex_color: str or list, *position: int):
         """set LED color with hex (RGB)
         default: ALL LEDs color turns hex value
         if you set potition, only a LED in the position turns hex value"""
-        stop_animation(self)
 
-        color = Color(int(hex_color[2:4], base=16),
-                      int(hex_color[:2], base=16),
-                      int(hex_color[4:6], base=16))
-        if(position):
-            # turn to this color only 1 pixel
-            self.strip.setPixelColor(position[0], color)
-            self.now_color[position[0]] = int_to_hexcolor(color, 'lib')
-        else:
-            self.now_color = []  # リセット
+        # カラーが単色の場合
+        if type(hex_color) is str:
+            color = Color(int(hex_color[2:4], base=16),
+                        int(hex_color[:2], base=16),
+                        int(hex_color[4:6], base=16))
+            if(position):
+                # turn to this color only 1 pixel
+                self.strip.setPixelColor(position[0], color)
+                self.now_color[position[0]] = int_to_hexcolor(color, 'lib')
+            else:
+                self.now_color = []  # リセット
+                for i in range(self.strip.numPixels()):
+                    self.strip.setPixelColor(i, color)
+                    self.now_color.append(int_to_hexcolor(color, 'lib'))
+        
+        # カラーをリスト指定された場合
+        elif type(hex_color) is list:
+            if position:
+                raise TypeError('hex_colorをリストで指定するする場合は、position指定はできません')
+            
+            color_list = []
+            for color in hex_color:
+                color = Color(int(color[2:4], base=16),
+                        int(color[:2], base=16),
+                        int(color[4:6], base=16))
+                color_list.append(color)
+            
+            self.now_color = []
             for i in range(self.strip.numPixels()):
-                self.strip.setPixelColor(i, color)
-                self.now_color.append(int_to_hexcolor(color, 'lib'))
+                self.strip.setPixelColor(i, color_list[i])
+                self.now_color.append(int_to_hexcolor(color_list[i], 'lib'))
+            
         self.strip.show()
         self.now_status = 'on'
 
