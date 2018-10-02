@@ -20,25 +20,25 @@ def animation_alternating_flashing(led: LEDObject, sleepsec=0.2, hexcolor='fffff
     # init
     while True:
         led.off()
-        for i in range(0, led.strip.numPixels(), dist * 2):
+        for i in range(0, led.num_pixels, dist * 2):
             for j in range(0, dist):
-                if i + j >= led.strip.numPixels():
+                if i + j >= led.num_pixels:
                     break
                 led.color(hexcolor, position=i + j)
             for j in range(dist, dist * 2):
-                if i + j >= led.strip.numPixels():
+                if i + j >= led.num_pixels:
                     break
                 led.color('000000', position=i + j)
         time.sleep(sleepsec)
 
         led.off()
-        for i in range(0, led.strip.numPixels(), dist * 2):
+        for i in range(0, led.num_pixels, dist * 2):
             for j in range(0, dist):
-                if i + j >= led.strip.numPixels():
+                if i + j >= led.num_pixels:
                     break
                 led.color('000000', position=i + j)
             for j in range(dist, dist * 2):
-                if i + j >= led.strip.numPixels():
+                if i + j >= led.num_pixels:
                     break
                 led.color(hexcolor, position=i + j)
         time.sleep(sleepsec)
@@ -62,7 +62,7 @@ def animation_rainbow(led: LEDObject, sleepsec=0.02, iterations=1):
     led.off() #init
     while True:
         for j in range(256 * iterations):
-            for i in range(led.strip.numPixels()):
+            for i in range(led.num_pixels):
                 led.color(wheel((i + j) & 255), position=i)
             time.sleep(sleepsec)
 
@@ -72,9 +72,19 @@ def animation_rainbow_cycle(led: LEDObject, sleepsec=0.02, iterations=5):
     led.off() #init
     while True:
         for j in range(256*iterations):
-            for i in range(led.strip.numPixels()):
-                led.color(wheel((int(i * 256 / led.strip.numPixels()) + j) & 255), position=i)
+            for i in range(led.num_pixels):
+                led.color(wheel((int(i * 256 / led.num_pixels) + j) & 255), position=i)
             time.sleep(sleepsec)
+
+
+def animation_flow(led: LEDObject, hexcolor: str, speed=10, block=2):
+    while True:
+        for i in range(0, led.num_pixels, block):
+            led.off() #clear
+            for j in range(block):
+                led.color(hexcolor, position=i+j)
+            time.sleep(1/speed)
+
 
 
 led = LEDObject()
@@ -127,3 +137,6 @@ if pattern == '全体レインボー':
 
 if pattern == 'レインボー進行':
     animation_rainbow_cycle(led)
+
+if pattern == '光の進行':
+    animation_flow(led, '0000ff')

@@ -54,6 +54,7 @@ class LEDObject():
             LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,
             LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         self.strip.begin()
+        self.num_pixels = self.strip.numPixels()
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
@@ -73,7 +74,7 @@ class LEDObject():
         color = Color(int(hex_color[2:4], base=16),
                       int(hex_color[:2], base=16),
                       int(hex_color[4:6], base=16))
-        if(position):
+        if position != None:
             # turn to this color only 1 pixel
             self.strip.setPixelColor(position, color)
             self.now_color[position] = int_to_hexcolor(color, 'lib')
