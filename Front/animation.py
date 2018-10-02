@@ -6,11 +6,12 @@ from lib import LEDObject
 
 
 def animation_blink(led: LEDObject, sleepsec=0.5, hexcolor='ffffff'):
+    led.off()
     while True:
-        led.off()
+        led.color(hexcolor)
         time.sleep(sleepsec)
 
-        led.color(hexcolor)
+        led.off()
         time.sleep(sleepsec)
 
 
