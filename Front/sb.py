@@ -5,7 +5,9 @@ from lib import LEDObject
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder='./templates/assets')
-pattern_list = ['全体点滅', '全体点滅 2x', '全体点滅 4x', '全体点滅 8x', '交互に点滅']
+pattern_list = ['全体点滅', '全体点滅 2x', '全体点滅 4x', '全体点滅 8x',
+                '交互に点滅', '交互に点滅 2x', '交互に点滅 4x', '交互に点滅 8x',
+                'レインボー']
 
 now_pattern = ' '
 led = LEDObject()
@@ -20,6 +22,10 @@ def index():
 def set_pattern():
     global now_pattern
     global led
+
+    if led.running_pipe:
+        led.running_pipe.kill()
+        led.running_pipe = None
 
     request_pattern = request.form['pattern']
     if request_pattern == 'clear':

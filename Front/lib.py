@@ -57,13 +57,11 @@ class LEDObject():
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
-        stop_animation(self)
         self.color('ffffff')
         self.now_status = 'on'
 
     def off(self):
         """"turn all LED OFF"""
-        stop_animation(self)
         self.color('000000')
         self.now_status = 'on'
 
@@ -71,7 +69,6 @@ class LEDObject():
         """set LED color with hex (RGB)
         default: ALL LEDs color turns hex value
         if you set potition, only a LED in the position turns hex value"""
-        stop_animation(self)
 
         color = Color(int(hex_color[2:4], base=16),
                       int(hex_color[:2], base=16),
@@ -91,8 +88,6 @@ class LEDObject():
     def animation(self, pattern: str, option1=None, option2=None):
         """set animation
         """
-        stop_animation(self)
-
         print('in the animation')
         if option1 and option2:
             self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern,
@@ -109,12 +104,6 @@ class LEDObject():
                 ['python3', CURRENT_DIRNAME + '/animation.py', pattern])
 
         self.now_status = 'on'
-
-
-def stop_animation(led: LEDObject):
-    if led.running_pipe:
-        led.running_pipe.kill()
-        led.running_pipe = None
 
 
 def main():
