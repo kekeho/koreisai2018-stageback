@@ -7,7 +7,7 @@ CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder='./templates/assets')
 pattern_list = ['全体点滅', '全体点滅 2x', '全体点滅 4x', '全体点滅 8x',
                 '交互に点滅', '交互に点滅 2x', '交互に点滅 4x', '交互に点滅 8x',
-                'レインボー']
+                '全体レインボー', 'レインボー進行']
 
 now_pattern = ' '
 led = LEDObject()

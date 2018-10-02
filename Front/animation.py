@@ -66,6 +66,15 @@ def animation_rainbow(led: LEDObject, sleepsec=0.02, iterations=1):
             time.sleep(sleepsec)
 
 
+def animation_rainbow_cycle(led: LEDObject, sleepsec=0.02, iterations=5):
+    """Draw rainbow that uniformly distributes itself across all pixels."""
+    while True:
+        for j in range(256*iterations):
+            for i in range(led.strip.numPixels()):
+                led.color(wheel((int(i * 256 / led.strip.numPixels()) + j) & 255), position=i)
+            time.sleep(sleepsec)
+
+
 led = LEDObject()
 argc = len(sys.argv)
 
@@ -111,5 +120,8 @@ if pattern == '交互に点滅 4x':
 if pattern == '交互に点滅 8x':
     animation_alternating_flashing(led, sleepsec=0.2/8, dist=4)
 
-if pattern == 'レインボー':
+if pattern == '全体レインボー':
     animation_rainbow(led)
+
+if pattern == 'レインボー進行':
+    animation_rainbow_cycle(led)
