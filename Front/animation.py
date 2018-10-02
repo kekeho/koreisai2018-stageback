@@ -34,13 +34,15 @@ if argc >= 3:
             option2 = sys.argv[i][8:]
 
 
-if pattern == 'blink':
-    # 点滅アニメーション
-    if option1 and option2:
-        animation_blink(led, sleepsec=float(option1), hexcolor=option2)
-    elif option1:
-        animation_blink(led, sleepsec=float(option1))
-    elif option2:
-        animation_blink(led, hexcolor=option2)
-    else:
-        animation_blink(led)
+if pattern == '全体点滅':
+    # 全体点滅アニメーション
+    animation_blink(led)
+
+if pattern == '全体点滅 2x':
+    animation_blink(led, sleepsec=0.5/2)
+
+if pattern == '全体点滅 4x':
+    animation_blink(led, sleepsec=0.5/4)
+
+if pattern == '全体点滅 8x':
+    animation_blink(led, sleepsec=0.5/8)

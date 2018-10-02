@@ -5,7 +5,7 @@ from lib import LEDObject
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder='./templates/assets')
-pattern_list = ['blink', 'hoge', 'fuga', 'nyan', 'kiee']
+pattern_list = ['全体点滅', '全体点滅 2x', '全体点滅 4x', '全体点滅 8x']
 
 now_pattern = ' '
 led = LEDObject()
