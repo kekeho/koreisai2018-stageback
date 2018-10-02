@@ -59,6 +59,7 @@ def wheel(pos):
 
 def animation_rainbow(led: LEDObject, sleepsec=0.02, iterations=1):
     """Draw rainbow that fades across all pixels at once."""
+    led.off() #init
     while True:
         for j in range(256 * iterations):
             for i in range(led.strip.numPixels()):
@@ -68,6 +69,7 @@ def animation_rainbow(led: LEDObject, sleepsec=0.02, iterations=1):
 
 def animation_rainbow_cycle(led: LEDObject, sleepsec=0.02, iterations=5):
     """Draw rainbow that uniformly distributes itself across all pixels."""
+    led.off() #init
     while True:
         for j in range(256*iterations):
             for i in range(led.strip.numPixels()):
