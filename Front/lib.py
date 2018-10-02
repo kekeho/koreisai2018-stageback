@@ -67,7 +67,7 @@ class LEDObject():
         self.color('000000')
         self.now_status = 'on'
 
-    def color(self, hex_color: str, *position: int):
+    def color(self, hex_color: str, position=None):
         """set LED color with hex (RGB)
         default: ALL LEDs color turns hex value
         if you set potition, only a LED in the position turns hex value"""
@@ -78,8 +78,8 @@ class LEDObject():
                       int(hex_color[4:6], base=16))
         if(position):
             # turn to this color only 1 pixel
-            self.strip.setPixelColor(position[0], color)
-            self.now_color[position[0]] = int_to_hexcolor(color, 'lib')
+            self.strip.setPixelColor(position, color)
+            self.now_color[position] = int_to_hexcolor(color, 'lib')
         else:
             self.now_color = []  # リセット
             for i in range(self.strip.numPixels()):

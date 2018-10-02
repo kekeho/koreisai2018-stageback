@@ -6,6 +6,7 @@ from lib import LEDObject
 
 
 def animation_blink(led: LEDObject, sleepsec=0.5, hexcolor='ffffff'):
+    # init
     led.off()
     while True:
         led.color(hexcolor)
@@ -13,6 +14,36 @@ def animation_blink(led: LEDObject, sleepsec=0.5, hexcolor='ffffff'):
 
         led.off()
         time.sleep(sleepsec)
+
+
+def animation_alternating_flashing(led: LEDObject, sleepsec=0.5, hexcolor='ffffff', dist=3):
+    # init
+    while True:
+        led.off()
+        for i in range(0, led.strip.numPixels(), dist*2):
+            for j in range(0, dist):
+                if i+j >= led.strip.numPixels():
+                    break;
+                led.color(hexcolor, position=i+j)
+            for j in range(dist, dist*2):
+                if i+j >= led.strip.numPixels():
+                    break;
+                led.color('000000', position=i+j)
+        time.sleep(sleepsec)
+
+        led.off()
+        for i in range(0, led.strip.numPixels(), dist*2):
+            for j in range(0, dist):
+                if i+j >= led.strip.numPixels():
+                    break;
+                led.color('000000', position=i+j)
+            for j in range(dist, dist*2):
+                if i+j >= led.strip.numPixels():
+                    break;
+                led.color(hexcolor, position=i+j)
+        time.sleep(sleepsec)
+                
+        
 
 
 led = LEDObject()
@@ -47,3 +78,6 @@ if pattern == '全体点滅 4x':
 
 if pattern == '全体点滅 8x':
     animation_blink(led, sleepsec=0.5/8)
+
+if pattern == '交互に点滅':
+    animation_alternating_flashing(led, dist=4)
