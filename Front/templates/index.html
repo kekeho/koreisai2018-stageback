@@ -51,6 +51,11 @@
                 <hr>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <h1 class="bold">Pattern</h1>
+            </div>
+        </div>
         {% if pattern_list %}
             {% for i in range(0, pattern_length_div_by_3_int+1) %}
                 <div class="row items-row">
@@ -60,7 +65,7 @@
                             <input class="form-control" type="hidden" name="pattern" value="{{pattern_list[i*3+j]}}">
                             <a href="javascript:form{{i*3+j}}.submit()" class="submit-button-link">
                                 {% if pattern_list[i*3+j] %}
-                                    <button class="btn btn-primary btn-pattern btn-gray" type="button">{{pattern_list[i*3+j]}}</button>
+                                    <button class="btn btn-primary btn-pattern btn-gray {{pattern_list[i*3+j]}}" type="button">{{pattern_list[i*3+j]}}</button>
                                 {% endif %}
                             </a>
                         </form>
@@ -76,6 +81,11 @@
                 <hr>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <h1 class="bold">Speed</h1>
+            </div>
+        </div>
         {% if speed_list %}
             {% for i in range(0, speed_length_div_by_3_int+1) %}
                 <div class="row items-row">
@@ -85,7 +95,7 @@
                             <input class="form-control" type="hidden" name="speed" value="{{speed_list[i*3+j]}}">
                             <a href="javascript:speed_form{{i*3+j}}.submit()" class="submit-button-link">
                                 {% if speed_list[i*3+j] %}
-                                    <button class="btn btn-primary btn-pattern btn-gray" type="button">{{speed_list[i*3+j]}}</button>
+                                    <button class="btn btn-primary btn-pattern btn-gray {{speed_list[i*3+j]}}" type="button">{{speed_list[i*3+j]}}</button>
                                 {% endif %}
                             </a>
                         </form>
@@ -94,12 +104,19 @@
                 </div>
             {% endfor %}  
         {% else %}
-            <h1>ERROR バグが発生しました</h1>
+            <h1>ERROR バグました</h1>
         {% endif %}
         
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        let pattern_button = document.getElementsByClassName('{{now_pattern}}')[0]
+        pattern_button.classList.add('pushed_effect')
+
+        let speed_button = document.getElementsByClassName('{{now_speed}}')[0]
+        speed_button.classList.add('pushed_effect')
+    </script>
 </body>
 
 </html>

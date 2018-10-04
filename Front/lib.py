@@ -4,17 +4,16 @@ import time
 import argparse
 import subprocess
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
-# set include path to openPurikura directory
 sys.path.append(CURRENT_DIRNAME + '/../lib/python')
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 10      # Number of LED pixels.
+LED_COUNT = 300      # Number of LED pixels.
 LED_PIN = 12      # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 30     # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 # True to invert the signal (when using NPN transistor level shift)
 LED_INVERT = False
 LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
@@ -47,6 +46,7 @@ class LEDObject():
         self.now_status = 'off'  # ON or OFF
         self.now_pattern = ' '  # animation pattern
         self.now_color = [] #color list
+        self.now_speed = '1x'
 
         string = {'P-inside': range(0, 56)}
 
@@ -102,7 +102,7 @@ class LEDObject():
             self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option2='+option2])
         else:
             self.running_pipe = subprocess.Popen(
-                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'k=awai'])
+                ['python3', CURRENT_DIRNAME + '/animation.py', pattern])
 
         self.now_status = 'on'
 

@@ -83,7 +83,7 @@ a.submit-button-link {
 }
 
 .btn.btn-primary.btn-pattern.btn-gray {
-  background-color:rgb(241,241,241) !important;
+  background-color:rgb(241,241,241);
   color:black;
   box-shadow:none;
   border-color:black;
@@ -103,3 +103,12 @@ a.submit-button-link {
   padding:0.5rem 0;
 }
 
+.bold {
+  font-weight: bold;
+}
+
+.pushed_effect {
+  font-weight: bold;
+  background-color: white !important;
+  border-width: 0.2rem;
+}

@@ -34,6 +34,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
     while True:
         led.off()
         for i in range(0, led.num_pixels, dist * 2):
+            
             for j in range(0, dist):
                 if i + j >= led.num_pixels:
                     break

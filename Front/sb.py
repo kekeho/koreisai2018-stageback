@@ -17,8 +17,10 @@ led = LEDObject()
 
 @app.route('/')
 def index():
-    return render_template('index.html', now_pattern=led.now_pattern, pattern_list=pattern_list, pattern_length_div_by_3_int=int(len(pattern_list) / 3),
-                            speed_list=speed_list, speed_length_div_by_3_int=int(len(speed_list) / 3))
+    return render_template('index.html', now_pattern=led.now_pattern, pattern_list=pattern_list, 
+                            pattern_length_div_by_3_int=int(len(pattern_list) / 3),
+                            speed_list=speed_list, speed_length_div_by_3_int=int(len(speed_list) / 3),
+                            now_speed=led.now_speed)
 
 
 @app.route('/set', methods=['POST'])
@@ -58,6 +60,7 @@ def set_pattern():
     elif request_speed:
         print('SPEED:', request_speed) #debug
         led.animation(led.now_pattern, option1=request_speed)
+        led.now_speed = request_speed
     else:
         raise ValueError()
         
