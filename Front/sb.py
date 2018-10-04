@@ -5,18 +5,20 @@ from lib import LEDObject
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder='./templates/assets')
-pattern_list = ['全体点滅', '全体点滅 2x', '全体点滅 4x', '全体点滅 8x',
-                '交互に点滅', '交互に点滅 2x', '交互に点滅 4x', '交互に点滅 8x',
+pattern_list = ['全体点滅',
+                '交互に点滅',
                 '全体レインボー', 'レインボー進行',
                 '光の進行']
 
-now_pattern = ' '
+speed_list = ['1x', '2x', '4x', '8x', '16x']
+
 led = LEDObject()
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', now_pattern=now_pattern, pattern_list=pattern_list, pattern_length_div_by_3_int=int(len(pattern_list) / 3))
+    return render_template('index.html', now_pattern=led.now_pattern, pattern_list=pattern_list, pattern_length_div_by_3_int=int(len(pattern_list) / 3),
+                            speed_list=speed_list, speed_length_div_by_3_int=int(len(speed_list) / 3))
 
 
 @app.route('/set', methods=['POST'])
@@ -28,18 +30,41 @@ def set_pattern():
         led.running_pipe.kill()
         led.running_pipe = None
 
-    request_pattern = request.form['pattern']
-    if request_pattern == 'clear':
-        # LEDすべてOFF
-        led.off()
-    elif request_pattern == 'allwhite':
-        led.on()
-    else:
-        led.animation(request_pattern)
+    print(request.form.getlist('pattern'))
 
-    print('GET:', request.form['pattern'])  # debug
+    request_pattern_list = request.form.getlist('pattern')
+    request_speed_list = request.form.getlist('speed')
+    request_pattern = None
+    request_speed = None
+
+    if len(request_pattern_list) != 0:
+        request_pattern = request_pattern_list[0]
+    elif len(request_speed_list) != 0:
+        request_speed = request_speed_list[0]
+    else:
+        raise ValueError
+
+    if request_pattern:
+        if request_pattern == 'clear':
+            # LEDすべてOFF
+            led.off()
+        elif request_pattern == 'allwhite':
+            led.on()
+        else:
+            led.animation(request_pattern)
+
+        led.now_pattern = request_pattern
+
+    elif request_speed:
+        print('SPEED:', request_speed) #debug
+        led.animation(led.now_pattern, option1=request_speed)
+    else:
+        raise ValueError()
+        
+
+    print('GET:', request_pattern, request_speed)  # debug
     # TODO: 余裕があれば、実際にRaspberry Pi側から完了信号が届いてからnow_patternを更新
-    now_pattern = request.form['pattern']
+  
     return redirect('/')
 
 

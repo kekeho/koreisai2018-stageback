@@ -5,19 +5,32 @@ from lib import LEDObject
 # python3 animation.py pattern option1=xxx option2=xxx
 
 
-def animation_blink(led: LEDObject, sleepsec=0.2, hexcolor='ffffff'):
+def animation_blink(led: LEDObject, speed: int, hexcolor: str):
+    if speed == None:
+        speed = 1
+    if hexcolor == None:
+        hexcolor = 'ffffff'
+
+    print(speed, hexcolor) #debug
+
+    sleepsec = 0.2
     # init
     led.off()
     while True:
         led.color(hexcolor)
-        time.sleep(sleepsec)
+        time.sleep(sleepsec/speed)
 
         led.off()
-        time.sleep(sleepsec)
+        time.sleep(sleepsec/speed)
 
 
-def animation_alternating_flashing(led: LEDObject, sleepsec=0.2, hexcolor='ffffff', dist=3):
-    # init
+def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, dist=3):
+    if speed == None:
+        speed = 1
+    if hexcolor == None:
+        hexcolor = 'ffffff'
+    
+    sleepsec = 0.2
     while True:
         led.off()
         for i in range(0, led.num_pixels, dist * 2):
@@ -29,7 +42,7 @@ def animation_alternating_flashing(led: LEDObject, sleepsec=0.2, hexcolor='fffff
                 if i + j >= led.num_pixels:
                     break
                 led.color('000000', position=i + j)
-        time.sleep(sleepsec)
+        time.sleep(sleepsec/speed)
 
         led.off()
         for i in range(0, led.num_pixels, dist * 2):
@@ -41,7 +54,7 @@ def animation_alternating_flashing(led: LEDObject, sleepsec=0.2, hexcolor='fffff
                 if i + j >= led.num_pixels:
                     break
                 led.color(hexcolor, position=i + j)
-        time.sleep(sleepsec)
+        time.sleep(sleepsec/speed)
 
 
 def wheel(pos):
@@ -57,33 +70,47 @@ def wheel(pos):
         return '{:02x}{:02x}{:02x}'.format(pos * 3, 0, 255 - pos * 3)
 
 
-def animation_rainbow(led: LEDObject, sleepsec=0.02, iterations=1):
+def animation_rainbow(led: LEDObject, speed: int, iterations=1):
     """Draw rainbow that fades across all pixels at once."""
+    if speed == None:
+        speed = 1
+
+    sleepsec = 0.02
     led.off() #init
     while True:
         for j in range(256 * iterations):
             for i in range(led.num_pixels):
                 led.color(wheel((i + j) & 255), position=i)
-            time.sleep(sleepsec)
+            time.sleep(sleepsec/speed)
 
 
-def animation_rainbow_cycle(led: LEDObject, sleepsec=0.02, iterations=5):
+def animation_rainbow_cycle(led: LEDObject, speed: int, iterations=5):
+    if speed == None:
+        speed = 1
+
     """Draw rainbow that uniformly distributes itself across all pixels."""
+    sleepsec = 0.02
     led.off() #init
     while True:
         for j in range(256*iterations):
             for i in range(led.num_pixels):
                 led.color(wheel((int(i * 256 / led.num_pixels) + j) & 255), position=i)
-            time.sleep(sleepsec)
+            time.sleep(sleepsec/speed)
 
 
-def animation_flow(led: LEDObject, hexcolor: str, speed=10, block=2):
+def animation_flow(led: LEDObject, speed: int,hexcolor: str, block=2):
+    if speed == None:
+        speed = 1
+    if hexcolor == None:
+        hexcolor = 'ffffff'
+    
+    sleepsec = 0.1
     while True:
         for i in range(0, led.num_pixels, block):
             led.off() #clear
             for j in range(block):
                 led.color(hexcolor, position=i+j)
-            time.sleep(1/speed)
+            time.sleep(sleepsec/speed)
 
 
 
@@ -102,41 +129,26 @@ if argc >= 3:
     # オプションが存在
     for i in range(2, argc):
         if 'option1=' in sys.argv[i]:
-            option1 = sys.argv[i][8:]
+            option1 = int(sys.argv[i][8:][:-1])
         if 'option2=' in sys.argv[i]:
             option2 = sys.argv[i][8:]
 
 
+print('ANIMATION:', pattern, option1, option2)
+
+
 if pattern == '全体点滅':
     # 全体点滅アニメーション
-    animation_blink(led)
-
-if pattern == '全体点滅 2x':
-    animation_blink(led, sleepsec=0.2 / 2)
-
-if pattern == '全体点滅 4x':
-    animation_blink(led, sleepsec=0.2 / 4)
-
-if pattern == '全体点滅 8x':
-    animation_blink(led, sleepsec=0.2 / 8)
+    animation_blink(led, speed=option1, hexcolor=option2)
 
 if pattern == '交互に点滅':
-    animation_alternating_flashing(led, dist=4)
-
-if pattern == '交互に点滅 2x':
-    animation_alternating_flashing(led, sleepsec=0.2/2, dist=4)
-
-if pattern == '交互に点滅 4x':
-    animation_alternating_flashing(led, sleepsec=0.2/4, dist=4)
-
-if pattern == '交互に点滅 8x':
-    animation_alternating_flashing(led, sleepsec=0.2/8, dist=4)
+    animation_alternating_flashing(led, speed=option1, hexcolor=option2)
 
 if pattern == '全体レインボー':
-    animation_rainbow(led)
+    animation_rainbow(led, speed=option1)
 
 if pattern == 'レインボー進行':
-    animation_rainbow_cycle(led)
+    animation_rainbow_cycle(led, speed=option1)
 
 if pattern == '光の進行':
-    animation_flow(led, '0000ff')
+    animation_flow(led, speed=option1, hexcolor=option2)

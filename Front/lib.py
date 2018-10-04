@@ -43,13 +43,14 @@ def int_to_hexcolor(num: int, *mode: str):
 class LEDObject():
     """Koreisai StageBack LED-Logo Object
     """
-    now_status = 'off'  # ON or OFF
-    now_pattern = None  # animation pattern
-    now_color = []
-    string = {'P-inside': range(0, 56)}
-    running_pipe = None
-
     def __init__(self):
+        self.now_status = 'off'  # ON or OFF
+        self.now_pattern = ' '  # animation pattern
+        self.now_color = [] #color list
+
+        string = {'P-inside': range(0, 56)}
+
+        self.running_pipe = None
         self.strip = Adafruit_NeoPixel(
             LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,
             LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
@@ -88,21 +89,20 @@ class LEDObject():
 
     def animation(self, pattern: str, option1=None, option2=None):
         """set animation
+        option1=Speed
+        option2=Color
         """
-        print('in the animation')
+        print('in the animation') #debug
+        print(pattern, option1, option2)
         if option1 and option2:
-            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern,
-                                                  'option1={}'.format(option1),
-                                                  'option2={}'.format(option2)])
+            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1='+option1, 'option2='+option2])
         elif option1:
-            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern,
-                                                  'option1={}'.format(option1)])
+            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1='+option1])
         elif option2:
-            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern,
-                                                  'option2={}'.format(option2)])
+            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option2='+option2])
         else:
             self.running_pipe = subprocess.Popen(
-                ['python3', CURRENT_DIRNAME + '/animation.py', pattern])
+                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'k=awai'])
 
         self.now_status = 'on'
 
