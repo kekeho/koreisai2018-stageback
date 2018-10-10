@@ -8,7 +8,7 @@ sys.path.append(CURRENT_DIRNAME + '/../lib/python')
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 300      # Number of LED pixels.
+LED_COUNT = 1098      # Number of LED pixels.
 LED_PIN = 12      # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -65,6 +65,7 @@ class LEDObject():
     def off(self):
         """"turn all LED OFF"""
         self.color('000000')
+        self.show()
         self.now_status = 'on'
 
     def color(self, hex_color: str, position=None):
@@ -84,8 +85,12 @@ class LEDObject():
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, color)
                 self.now_color.append(int_to_hexcolor(color, 'lib'))
+
+    
+    def show(self):
         self.strip.show()
         self.now_status = 'on'
+
 
     def animation(self, pattern: str, option1=None, option2=None):
         """set animation

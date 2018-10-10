@@ -52,6 +52,7 @@ def set_pattern():
             led.off()
         elif request_pattern == 'allwhite':
             led.on()
+            led.show()
         else:
             led.animation(request_pattern)
 

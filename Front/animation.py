@@ -18,6 +18,7 @@ def animation_blink(led: LEDObject, speed: int, hexcolor: str):
     led.off()
     while True:
         led.color(hexcolor)
+        led.show()
         time.sleep(sleepsec/speed)
 
         led.off()
@@ -43,6 +44,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
                 if i + j >= led.num_pixels:
                     break
                 led.color('000000', position=i + j)
+        led.show()
         time.sleep(sleepsec/speed)
 
         led.off()
@@ -55,6 +57,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
                 if i + j >= led.num_pixels:
                     break
                 led.color(hexcolor, position=i + j)
+        led.show()
         time.sleep(sleepsec/speed)
 
 
@@ -82,6 +85,7 @@ def animation_rainbow(led: LEDObject, speed: int, iterations=1):
         for j in range(256 * iterations):
             for i in range(led.num_pixels):
                 led.color(wheel((i + j) & 255), position=i)
+            led.show()
             time.sleep(sleepsec/speed)
 
 
@@ -96,6 +100,7 @@ def animation_rainbow_cycle(led: LEDObject, speed: int, iterations=5):
         for j in range(256*iterations):
             for i in range(led.num_pixels):
                 led.color(wheel((int(i * 256 / led.num_pixels) + j) & 255), position=i)
+            led.show()
             time.sleep(sleepsec/speed)
 
 
@@ -111,6 +116,7 @@ def animation_flow(led: LEDObject, speed: int,hexcolor: str, block=2):
             led.off() #clear
             for j in range(block):
                 led.color(hexcolor, position=i+j)
+            led.show()
             time.sleep(sleepsec/speed)
 
 
