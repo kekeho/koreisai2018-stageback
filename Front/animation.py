@@ -142,7 +142,7 @@ def animation_flow(led: LEDObject, speed: int, hexcolor: str, block=2):
 
 def string(led: LEDObject, hexcolor: str, char: str):
     """
-    lightup only single char
+    set color only single char
     warning: this method does not clear other pixel
     """
     if len(char) != 1:
@@ -153,6 +153,14 @@ def string(led: LEDObject, hexcolor: str, char: str):
 
     for i in painter[char]:
         led.color(hexcolor, position=i)
+
+
+def pain(led: LEDObject, hexcolor: str):
+    if hexcolor == None:
+        hexcolor = 'ff0000'
+    led.off()
+    for char in 'Pain':
+        string(led, hexcolor, char)
     led.show()
 
 
@@ -195,31 +203,41 @@ if pattern == 'レインボー進行':
 if pattern == '光の進行':
     animation_flow(led, speed=option1, hexcolor=option2)
 
+if pattern == 'Pain':
+    pain(led, hexcolor=option2)
+
 
 if pattern == 'P':
     led.off()
     string(led, hexcolor=option2, char='P')
+    led.show()
 
 if pattern == 'a':
     led.off()
     string(led, hexcolor=option2, char='a')
+    led.show()
 
 if pattern == 'i':
     led.off()
     string(led, hexcolor=option2, char='i')
+    led.show()
 
 if pattern == 'n':
     led.off()
     string(led, hexcolor=option2, char='n')
+    led.show()
 
 if pattern == 't':
     led.off()
     string(led, hexcolor=option2, char='t')
+    led.show()
 
 if pattern == 'e':
     led.off()
     string(led, hexcolor=option2, char='e')
+    led.show()
 
 if pattern == 'r':
     led.off()
     string(led, hexcolor=option2, char='r')
+    led.show()

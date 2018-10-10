@@ -9,6 +9,7 @@ pattern_list = ['全体点滅',
                 '交互に点滅',
                 '全体レインボー', 'レインボー進行',
                 '光の進行',
+                'Pain',
                 'P', 'a', 'i', 'n', 't', 'e', 'r']
 
 speed_list = ['1x', '2x', '4x', '8x', '16x']
@@ -18,10 +19,12 @@ led = LEDObject()
 
 @app.route('/')
 def index():
-    return render_template('index.html', now_pattern=led.now_pattern, pattern_list=pattern_list, 
-                            pattern_length_div_by_3_int=int(len(pattern_list) / 3),
-                            speed_list=speed_list, speed_length_div_by_3_int=int(len(speed_list) / 3),
-                            now_speed=led.now_speed)
+    return render_template('index.html', now_pattern=led.now_pattern, pattern_list=pattern_list,
+                           pattern_length_div_by_3_int=int(
+                               len(pattern_list) / 3),
+                           speed_list=speed_list, speed_length_div_by_3_int=int(
+                               len(speed_list) / 3),
+                           now_speed=led.now_speed)
 
 
 @app.route('/set', methods=['POST'])
@@ -60,16 +63,15 @@ def set_pattern():
         led.now_pattern = request_pattern
 
     elif request_speed:
-        print('SPEED:', request_speed) #debug
+        print('SPEED:', request_speed)  # debug
         led.animation(led.now_pattern, option1=request_speed)
         led.now_speed = request_speed
     else:
         raise ValueError()
-        
 
     print('GET:', request_pattern, request_speed)  # debug
     # TODO: 余裕があれば、実際にRaspberry Pi側から完了信号が届いてからnow_patternを更新
-  
+
     return redirect('/')
 
 
