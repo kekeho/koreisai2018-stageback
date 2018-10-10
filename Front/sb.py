@@ -8,7 +8,8 @@ app = Flask(__name__, static_folder='./templates/assets')
 pattern_list = ['全体点滅',
                 '交互に点滅',
                 '全体レインボー', 'レインボー進行',
-                '光の進行']
+                '光の進行',
+                'P', 'a', 'i', 'n', 't', 'e', 'r']
 
 speed_list = ['1x', '2x', '4x', '8x', '16x']
 

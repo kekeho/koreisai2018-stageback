@@ -3,6 +3,12 @@ import time
 import colorsys
 from lib import LEDObject
 
+
+painter = {'P': range(0, 194), 'a': range(194, 390),
+           'i': range(390, 507), 'n': range(507, 677),
+           't': range(677, 795), 'e': range(795, 986),
+           'r': range(986, 1093)}
+
 # python3 animation.py pattern option1=xxx option2=xxx
 
 
@@ -134,6 +140,22 @@ def animation_flow(led: LEDObject, speed: int, hexcolor: str, block=2):
             time.sleep(sleepsec / speed)
 
 
+def string(led: LEDObject, hexcolor: str, char: str):
+    """
+    lightup only single char
+    warning: this method does not clear other pixel
+    """
+    if len(char) != 1:
+        raise ValueError
+
+    if hexcolor == None:
+        hexcolor = 'ffffff'
+
+    for i in painter[char]:
+        led.color(hexcolor, position=i)
+    led.show()
+
+
 led = LEDObject()
 argc = len(sys.argv)
 
@@ -172,3 +194,32 @@ if pattern == 'レインボー進行':
 
 if pattern == '光の進行':
     animation_flow(led, speed=option1, hexcolor=option2)
+
+
+if pattern == 'P':
+    led.off()
+    string(led, hexcolor=option2, char='P')
+
+if pattern == 'a':
+    led.off()
+    string(led, hexcolor=option2, char='a')
+
+if pattern == 'i':
+    led.off()
+    string(led, hexcolor=option2, char='i')
+
+if pattern == 'n':
+    led.off()
+    string(led, hexcolor=option2, char='n')
+
+if pattern == 't':
+    led.off()
+    string(led, hexcolor=option2, char='t')
+
+if pattern == 'e':
+    led.off()
+    string(led, hexcolor=option2, char='e')
+
+if pattern == 'r':
+    led.off()
+    string(led, hexcolor=option2, char='r')
