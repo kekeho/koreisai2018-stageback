@@ -4,12 +4,21 @@ import colorsys
 from lib import LEDObject
 
 
-painter = {'P': range(0, 194), 'a': range(194, 390),
+painter = {'P': range(0, 203), 'a': range(203, 390),
            'i': range(390, 507), 'n': range(507, 677),
            't': range(677, 795), 'e': range(795, 986),
            'r': range(986, 1093)}
 
 # python3 animation.py pattern option1=xxx option2=xxx
+
+
+def default(led: LEDObject):
+    led.off()
+    painter_color = ['ff8200', '5555ff', '1fff00',
+                     'fff400', 'ff00d2', '0029ff', 'ff1010']
+    for hexcolor, char in zip(painter_color, 'Painter'):
+        string(led, hexcolor, char)
+    led.show()
 
 
 def animation_blink(led: LEDObject, speed: int, hexcolor: str):
@@ -186,6 +195,8 @@ if argc >= 3:
 
 print('ANIMATION:', pattern, option1, option2)
 
+if pattern == 'デフォルト':
+    default(led)
 
 if pattern == '全体点滅':
     # 全体点滅アニメーション
