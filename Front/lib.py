@@ -42,10 +42,11 @@ def int_to_hexcolor(num: int, *mode: str):
 class LEDObject():
     """Koreisai StageBack LED-Logo Object
     """
+
     def __init__(self):
         self.now_status = 'off'  # ON or OFF
         self.now_pattern = ' '  # animation pattern
-        self.now_color = [] #color list
+        self.now_color = []  # color list
         self.now_speed = '1x'
 
         string = {'P-inside': range(0, 56)}
@@ -86,25 +87,31 @@ class LEDObject():
                 self.strip.setPixelColor(i, color)
                 self.now_color.append(int_to_hexcolor(color, 'lib'))
 
-    
     def show(self):
         self.strip.show()
         self.now_status = 'on'
 
+    def pixel_shift(self):
+        self.now_color.insert(0, self.now_color.pop())
+        for i, hexcolor in enumerate(self.now_color):
+            self.color(hexcolor, i)
 
     def animation(self, pattern: str, option1=None, option2=None):
         """set animation
         option1=Speed
         option2=Color
         """
-        print('in the animation') #debug
+        print('in the animation')  # debug
         print(pattern, option1, option2)
         if option1 and option2:
-            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1='+option1, 'option2='+option2])
+            self.running_pipe = subprocess.Popen(
+                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1=' + option1, 'option2=' + option2])
         elif option1:
-            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1='+option1])
+            self.running_pipe = subprocess.Popen(
+                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1=' + option1])
         elif option2:
-            self.running_pipe = subprocess.Popen(['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option2='+option2])
+            self.running_pipe = subprocess.Popen(
+                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option2=' + option2])
         else:
             self.running_pipe = subprocess.Popen(
                 ['python3', CURRENT_DIRNAME + '/animation.py', pattern])
