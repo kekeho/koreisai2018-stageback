@@ -13,7 +13,6 @@ painter = {'P': range(0, 203), 'a': range(203, 390),
 
 
 def default(led: LEDObject):
-    led.off()
     painter_color = ['ff8200', '5555ff', '1fff00',
                      'fff400', 'ff00d2', '0029ff', 'ff1010']
     for hexcolor, char in zip(painter_color, 'Painter'):
@@ -30,8 +29,6 @@ def animation_blink(led: LEDObject, speed: int, hexcolor: str):
     print(speed, hexcolor)  # debug
 
     sleepsec = 0.2
-    # init
-    led.off()
     while True:
         led.color(hexcolor)
         led.show()
@@ -78,7 +75,6 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
 
 
 def animation_rainbow(led: LEDObject, circle_width=50):
-    led.off()  # init
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -107,7 +103,6 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
 
     """Draw rainbow that uniformly distributes itself across all pixels."""
     sleepsec = 0.1
-    led.off()  # init
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -167,9 +162,10 @@ def string(led: LEDObject, hexcolor: str, char: str):
 def pain(led: LEDObject, hexcolor: str):
     if hexcolor == None:
         hexcolor = 'ff0000'
-    led.off()
     for char in 'Pain':
         string(led, hexcolor, char)
+    for char in 'ter':
+        strint(led, '000000', char)
     led.show()
 
 
