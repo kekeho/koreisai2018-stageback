@@ -201,7 +201,7 @@ if argc >= 3:
         if 'option1=' in sys.argv[i]:
             option1 = int(sys.argv[i][8:][:-1])
         if 'option2=' in sys.argv[i]:
-            option2 = sys.argv[i][8:]
+            option2 = sys.argv[i][8:][:1]
 
 
 print('ANIMATION:', pattern, option1, option2)

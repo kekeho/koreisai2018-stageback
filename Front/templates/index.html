@@ -112,9 +112,33 @@
                 </div>
             {% endfor %}  
         {% else %}
-            <h1>ERROR バグました</h1>
+            <h1>ERROR バグが発生しました</h1>
         {% endif %}
-        
+        <div class="row">
+            <div class="col">
+                <h1 class="bold">color</h1>
+            </div>
+        </div>
+        {% if color_list %}
+            {% for i in range(0, color_length_div_by_3_int+1) %}
+                <div class="row items-row">
+                {% for j in range(0, 3) %}
+                    <div class="col item-box">
+                        <form method="post" action="/set" name="color_form{{i*3+j}}">
+                            <input class="form-control" type="hidden" name="color" value="{{color_list[i*3+j]}}">
+                            <a href="javascript:color_form{{i*3+j}}.submit()" class="submit-button-link">
+                                {% if color_list[i*3+j] %}
+                                    <button class="btn btn-primary btn-pattern btn-gray {{color_list[i*3+j]}}" type="button">{{color_list[i*3+j]}}</button>
+                                {% endif %}
+                            </a>
+                        </form>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}  
+        {% else %}
+            <h1>ERROR バグが発生しました</h1>
+        {% endif %}
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

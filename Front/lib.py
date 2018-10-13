@@ -129,7 +129,7 @@ class LEDObject():
 def round(char: str):
     if len(char) != 1:
         raise ValueError
-    
+
     if char == 'P':
         P = [list(range(145, 148)) + list(range(0, 4))]
         for i, j in zip(range(125, 145)[::-1], range(4, 24)):
@@ -151,7 +151,7 @@ def round(char: str):
                 P.append([i, j])
         return P
 
-        
+
 
 def main():
     led = LEDObject()

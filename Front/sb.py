@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 from lib import LEDObject
+from matplotlib import colors
 
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
@@ -14,17 +15,18 @@ pattern_list = ['全体点滅',
 
 speed_list = ['1x', '2x', '4x', '8x', '16x']
 
+color_list = ['red', 'green', 'blue', 'yellow', 'hotpink', 'aqua']
+
 led = LEDObject()
 
 
 @app.route('/')
 def index():
     return render_template('index.html', now_pattern=led.now_pattern, pattern_list=pattern_list,
-                           pattern_length_div_by_3_int=int(
-                               len(pattern_list) / 3),
-                           speed_list=speed_list, speed_length_div_by_3_int=int(
-                               len(speed_list) / 3),
-                           now_speed=led.now_speed)
+                           pattern_length_div_by_3_int=int(len(pattern_list) / 3),
+                           speed_list=speed_list, speed_length_div_by_3_int=int(len(speed_list) / 3),
+                           now_speed=led.now_speed,  color_list=color_list,  color_length_div_by_3_int=int(len(color_list) / 3)
+                           )
 
 
 @app.route('/set', methods=['POST'])
@@ -40,13 +42,17 @@ def set_pattern():
 
     request_pattern_list = request.form.getlist('pattern')
     request_speed_list = request.form.getlist('speed')
+    request_color_list = request.form.getlist('color')
     request_pattern = None
     request_speed = None
+    request_color = None
 
     if len(request_pattern_list) != 0:
         request_pattern = request_pattern_list[0]
     elif len(request_speed_list) != 0:
         request_speed = request_speed_list[0]
+    elif len(request_color_list) != 0:
+        request_color = request_color_list[0]
     else:
         raise ValueError
 
@@ -66,10 +72,15 @@ def set_pattern():
         print('SPEED:', request_speed)  # debug
         led.animation(led.now_pattern, option1=request_speed)
         led.now_speed = request_speed
+
+    elif request_color:
+        print('COLOR:', request_color)  # debug
+        led.animation(led.now_pattern, option1=led.now_speed, option2=colors.cnames[led.request_color])
+        led.now_color = request_color
     else:
         raise ValueError()
 
-    print('GET:', request_pattern, request_speed)  # debug
+    print('GET:', request_pattern, request_speed, request_color)  # debug
     # TODO: 余裕があれば、実際にRaspberry Pi側から完了信号が届いてからnow_patternを更新
 
     return redirect('/')
