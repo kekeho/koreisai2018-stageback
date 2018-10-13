@@ -46,7 +46,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
 
     sleepsec = 0.2
     while True:
-        led.off()
+        led.color('000000')
         for i in range(0, led.num_pixels, dist * 2):
 
             for j in range(0, dist):
@@ -60,7 +60,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
         led.show()
         time.sleep(sleepsec / speed)
 
-        led.off()
+        led.color('000000')
         for i in range(0, led.num_pixels, dist * 2):
             for j in range(0, dist):
                 if i + j >= led.num_pixels:
@@ -137,7 +137,7 @@ def animation_flow(led: LEDObject, speed: int, hexcolor: str, block=2):
     sleepsec = 0.1
     while True:
         for i in range(0, led.num_pixels, block):
-            led.off()  # clear
+            led.color('000000')  # clear
             for j in range(block):
                 led.color(hexcolor, position=i + j)
             led.show()
@@ -165,7 +165,7 @@ def pain(led: LEDObject, hexcolor: str):
     for char in 'Pain':
         string(led, hexcolor, char)
     for char in 'ter':
-        strint(led, '000000', char)
+        string(led, '000000', char)
     led.show()
 
 

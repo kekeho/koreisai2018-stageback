@@ -44,19 +44,19 @@ class LEDObject():
     """
 
     def __init__(self):
+        self.strip = Adafruit_NeoPixel(
+            LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,
+            LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+        self.num_pixels = self.strip.numPixels()
         self.now_status = 'off'  # ON or OFF
         self.now_pattern = ' '  # animation pattern
-        self.now_color = []  # color list
+        self.now_color = ['000000' for i in range(self.num_pixels)]  # color list
         self.now_speed = '1x'
 
         string = {'P-inside': range(0, 56)}
 
         self.running_pipe = None
-        self.strip = Adafruit_NeoPixel(
-            LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,
-            LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         self.strip.begin()
-        self.num_pixels = self.strip.numPixels()
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
