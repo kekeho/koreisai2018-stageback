@@ -4,11 +4,6 @@ import colorsys
 from lib import LEDObject
 
 
-painter = {'P': range(0, 203), 'a': range(203, 390),
-           'i': range(390, 507), 'n': range(507, 677),
-           't': range(677, 795), 'e': range(795, 986),
-           'r': range(986, 1093)}
-
 # python3 animation.py pattern option1=xxx option2=xxx
 
 
@@ -155,7 +150,7 @@ def string(led: LEDObject, hexcolor: str, char: str):
     if hexcolor == None:
         hexcolor = 'ffffff'
 
-    for i in painter[char]:
+    for i in led.painter[char]:
         led.color(hexcolor, position=i)
 
 
@@ -166,6 +161,26 @@ def pain(led: LEDObject, hexcolor: str):
         string(led, hexcolor, char)
     for char in 'ter':
         string(led, '000000', char)
+    led.show()
+
+
+def animation_round(led: LEDObject, char: str,speed: int, hexcolor: str):
+    if len(char) != 1:
+        raise ValueError
+    
+    # Init
+    led.off()
+    if speed == None:
+        speed = 1
+    if hexcolor == None:
+        hexcolor = 'ffffff'
+
+    for count, line in enumerate(led.round_painter[char]):
+        for pixel in line:
+            led.color(hexcolor, pixel)
+        if count%speed == 0: 
+            led.show()
+            time.sleep(0.001/speed)
     led.show()
 
 
@@ -215,14 +230,10 @@ if pattern == 'Pain':
 
 
 if pattern == 'P':
-    led.off()
-    string(led, hexcolor=option2, char='P')
-    led.show()
+    animation_round(led, 'P', speed=option1, hexcolor=option2)
 
 if pattern == 'a':
-    led.off()
-    string(led, hexcolor=option2, char='a')
-    led.show()
+    animation_round(led, 'a', speed=option1, hexcolor=option2)
 
 if pattern == 'i':
     led.off()

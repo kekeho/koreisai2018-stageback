@@ -53,7 +53,14 @@ class LEDObject():
         self.now_color = ['000000' for i in range(self.num_pixels)]  # color list
         self.now_speed = '1x'
 
-        string = {'P-inside': range(0, 56)}
+        self.painter = {'P': range(0, 203), 'a': range(203, 396),
+                        'i': range(396, 510), 'n': range(510, 677),
+                        't': range(677, 795), 'e': range(795, 986),
+                        'r': range(986, 1093)}
+
+        self.round_painter = {'P': round('P'), 'a': round('a')
+
+        }
 
         self.running_pipe = None
         self.strip.begin()
@@ -118,6 +125,33 @@ class LEDObject():
 
         self.now_status = 'on'
 
+
+def round(char: str):
+    if len(char) != 1:
+        raise ValueError
+    
+    if char == 'P':
+        P = [list(range(145, 148)) + list(range(0, 4))]
+        for i, j in zip(range(125, 145)[::-1], range(4, 24)):
+            P.append([i, j])
+        for i in range(116, 125)[::-1]:
+            P.append([i])
+        for i, j in zip(range(99, 116)[::-1], list(range(193, 203))+list(range(148, 155))):
+            P.append([i, j])
+        for i in range(86, 99)[::-1]:
+            P.append([i])
+
+        previous_j = None
+        for i in range(24, 86)[::-1]:
+            j = int(155 + (193-155) / (86-24) * (-1*i + 86))
+            if previous_j == j:
+                P.append([i])
+            else:
+                previous_j = j
+                P.append([i, j])
+        return P
+
+        
 
 def main():
     led = LEDObject()
