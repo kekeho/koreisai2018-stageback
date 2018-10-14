@@ -6,10 +6,10 @@ from matplotlib import colors
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder='./templates/assets')
-pattern_list = ['全体点滅',
-                '交互に点滅',
-                '全体レインボー', 'レインボー進行',
-                '光の進行',
+pattern_list = ['Blink',
+                'Alternately Blink',
+                'Rainbow', 'Rainbow Animation',
+                'Advance',
                 'Pain',
                 'P', 'a', 'i', 'n', 't', 'e', 'r']
 
@@ -75,8 +75,10 @@ def set_pattern():
 
     elif request_color:
         print('COLOR:', request_color)  # debug
-        led.animation(led.now_pattern, option1=led.now_speed, option2=colors.cnames[led.request_color])
-        led.now_color = request_color
+        hexcolor = colors.cnames[request_color][1:].lower()
+        print(hexcolor)
+        led.animation(led.now_pattern, option1=led.now_speed, option2=hexcolor)
+        led.now_color = [hexcolor for i in range(led.num_pixels)]
     else:
         raise ValueError()
 

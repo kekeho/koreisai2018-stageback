@@ -201,28 +201,28 @@ if argc >= 3:
         if 'option1=' in sys.argv[i]:
             option1 = int(sys.argv[i][8:][:-1])
         if 'option2=' in sys.argv[i]:
-            option2 = sys.argv[i][8:][:1]
+            option2 = sys.argv[i][8:]
 
 
 print('ANIMATION:', pattern, option1, option2)
 
-if pattern == 'デフォルト':
+if pattern == 'Default':
     default(led)
 
-if pattern == '全体点滅':
+if pattern == 'Blink':
     # 全体点滅アニメーション
     animation_blink(led, speed=option1, hexcolor=option2)
 
-if pattern == '交互に点滅':
+if pattern == 'Alternately Blink':
     animation_alternating_flashing(led, speed=option1, hexcolor=option2)
 
-if pattern == '全体レインボー':
+if pattern == 'Rainbow':
     animation_rainbow(led)
 
-if pattern == 'レインボー進行':
+if pattern == 'Rainbow Animation':
     animation_rainbow_flow(led, speed=option1)
 
-if pattern == '光の進行':
+if pattern == 'Advance':
     animation_flow(led, speed=option1, hexcolor=option2)
 
 if pattern == 'Pain':
