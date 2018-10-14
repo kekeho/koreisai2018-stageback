@@ -15,7 +15,7 @@ pattern_list = ['Blink',
 
 speed_list = ['1x', '2x', '4x', '8x', '16x']
 
-color_list = ['red', 'green', 'blue', 'yellow', 'hotpink', 'aqua']
+color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua']
 
 led = LEDObject()
 
@@ -26,7 +26,7 @@ def index():
                            pattern_length_div_by_3_int=int(len(pattern_list) / 3),
                            speed_list=speed_list, speed_length_div_by_3_int=int(len(speed_list) / 3),
                            now_speed=led.now_speed,  color_list=color_list,  color_length_div_by_3_int=int(len(color_list) / 3)
-                           )
+                           , now_color=led.now_color_button)
 
 
 @app.route('/set', methods=['POST'])
@@ -64,21 +64,23 @@ def set_pattern():
             led.on()
             led.show()
         else:
-            led.animation(request_pattern)
+            hexcolor = colors.cnames[led.now_color_button][1:].lower()
+            led.animation(request_pattern, option1=led.now_speed, option2=hexcolor)
 
         led.now_pattern = request_pattern
 
     elif request_speed:
         print('SPEED:', request_speed)  # debug
-        led.animation(led.now_pattern, option1=request_speed)
+        hexcolor = colors.cnames[led.now_color_button][1:].lower()
+        led.animation(led.now_pattern, option1=request_speed, option2=hexcolor)
         led.now_speed = request_speed
 
     elif request_color:
         print('COLOR:', request_color)  # debug
         hexcolor = colors.cnames[request_color][1:].lower()
-        print(hexcolor)
         led.animation(led.now_pattern, option1=led.now_speed, option2=hexcolor)
         led.now_color = [hexcolor for i in range(led.num_pixels)]
+        led.now_color_button = request_color
     else:
         raise ValueError()
 

@@ -52,6 +52,7 @@ class LEDObject():
         self.now_pattern = ' '  # animation pattern
         self.now_color = ['000000' for i in range(self.num_pixels)]  # color list
         self.now_speed = '1x'
+        self.now_color_button = 'white'
 
         self.painter = {'P': range(0, 203), 'a': range(203, 396),
                         'i': range(396, 510), 'n': range(510, 677),

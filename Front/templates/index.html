@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col now">
                 {% if now_pattern %}
-                    <h1>NOW: {{now_pattern}}</h1>
+                    <h1>NOW: {{now_pattern}} / {{now_speed}} / {{now_color}}</h1>
                 {% else %}
                     <h1>NOW: ERROR_バグが発生しました</h1>
                 {% endif %}
@@ -148,6 +148,9 @@
 
         let speed_button = document.getElementsByClassName('{{now_speed}}')[0]
         speed_button.classList.add('pushed_effect')
+
+        let color_button = document.getElementsByClassName('{{now_color}}')[0]
+        color_button.classList.add('pushed_effect')
     </script>
 </body>
 
