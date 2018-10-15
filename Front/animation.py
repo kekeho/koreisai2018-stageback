@@ -20,17 +20,26 @@ def animation_blink(led: LEDObject, speed: int, hexcolor: str):
         speed = 1
     if hexcolor == None:
         hexcolor = 'ffffff'
-
-    print(speed, hexcolor)  # debug
-
     sleepsec = 0.2
-    while True:
-        led.color(hexcolor)
-        led.show()
-        time.sleep(sleepsec / speed)
 
-        led.off()
-        time.sleep(sleepsec / speed)
+    if hexcolor == 'rainbow':
+        animation_rainbow(led)
+        color_list = led.get_now_color()
+        while True:
+            for i, color in enumerate(color_list):
+                led.color(color, position=i)
+            led.show()
+            time.sleep(sleepsec / speed)
+            led.off()
+            time.sleep(sleepsec / speed)
+    else:
+        while True:
+            led.color(hexcolor)
+            led.show()
+            time.sleep(sleepsec / speed)
+
+            led.off()
+            time.sleep(sleepsec / speed)
 
 
 def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, dist=3):

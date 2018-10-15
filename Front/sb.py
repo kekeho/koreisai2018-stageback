@@ -15,7 +15,7 @@ pattern_list = ['Blink',
 
 speed_list = ['1x', '2x', '4x', '8x', '16x']
 
-color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua']
+color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua', 'rainbow']
 
 led = LEDObject()
 
@@ -64,22 +64,32 @@ def set_pattern():
             led.on()
             led.show()
         else:
-            hexcolor = colors.cnames[led.now_color_button][1:].lower()
-            led.animation(request_pattern, option1=led.now_speed, option2=hexcolor)
+            if led.now_color_button == 'rainbow':
+                led.animation(request_pattern, option1=led.now_speed, option2=led.now_color_button)
+            else:
+                hexcolor = colors.cnames[led.now_color_button][1:].lower()
+                led.animation(request_pattern, option1=led.now_speed, option2=hexcolor)
+            
 
         led.now_pattern = request_pattern
 
     elif request_speed:
         print('SPEED:', request_speed)  # debug
-        hexcolor = colors.cnames[led.now_color_button][1:].lower()
-        led.animation(led.now_pattern, option1=request_speed, option2=hexcolor)
+        if led.now_color_button == 'rainbow':
+            led.animation(led.now_pattern, option1=led.now_speed, option2=led.now_color_button)
+        else:
+            hexcolor = colors.cnames[led.now_color_button][1:].lower()
+            led.animation(led.now_pattern, option1=request_speed, option2=hexcolor)
         led.now_speed = request_speed
 
     elif request_color:
         print('COLOR:', request_color)  # debug
-        hexcolor = colors.cnames[request_color][1:].lower()
-        led.animation(led.now_pattern, option1=led.now_speed, option2=hexcolor)
-        led.now_color = [hexcolor for i in range(led.num_pixels)]
+        if request_color == 'rainbow':
+            led.animation(led.now_pattern, option1=led.now_speed, option2=request_color)
+        else:
+            hexcolor = colors.cnames[request_color][1:].lower()
+            led.animation(led.now_pattern, option1=led.now_speed, option2=hexcolor)
+            led.now_color = [hexcolor for i in range(led.num_pixels)]
         led.now_color_button = request_color
     else:
         raise ValueError()
