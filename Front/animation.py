@@ -166,11 +166,19 @@ def string(led: LEDObject, hexcolor: str, char: str):
 def pain(led: LEDObject, hexcolor: str):
     if hexcolor == None:
         hexcolor = 'ff0000'
-    for char in 'Pain':
-        string(led, hexcolor, char)
-    for char in 'ter':
-        string(led, '000000', char)
-    led.show()
+
+    if hexcolor == 'rainbow':
+        animation_rainbow(led)
+        for char in 'ter':
+            string(led, '000000', char)
+        led.show()
+
+    else:
+        for char in 'Pain':
+            string(led, hexcolor, char)
+        for char in 'ter':
+            string(led, '000000', char)
+        led.show()
 
 
 def animation_round(led: LEDObject, char: str,speed: int, hexcolor: str):
