@@ -223,9 +223,6 @@ if argc >= 3:
 
 print('ANIMATION:', pattern, option1, option2)
 
-# init
-led.off()
-
 if pattern == 'Default':
     default(led)
 
