@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 from lib import LEDObject
 from matplotlib import colors
+import subprocess
 
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,6 +37,7 @@ def set_pattern():
 
     if led.running_pipe:
         led.running_pipe.kill()
+        print('KILL PROCESS') #debug
         led.running_pipe = None
 
     print(request.form.getlist('pattern'))
@@ -96,11 +98,21 @@ def set_pattern():
 
     print('GET:', request_pattern, request_speed, request_color)  # debug
     # TODO: 余裕があれば、実際にRaspberry Pi側から完了信号が届いてからnow_patternを更新
+    if led.running_pipe:
+        runnning_pid = led.running_pipe.pid
+        with open(CURRENT_DIRNAME + '/pid.log', mode='w') as logfile:
+            logfile.write(str(runnning_pid))
 
     return redirect('/')
 
 
 def main():
+    with open(CURRENT_DIRNAME + '/pid.log', 'r') as pid_log:
+        running_pid = pid_log.read()
+        if running_pid:
+            print('KILL PROCESS') # debug
+            subprocess.run(['sudo', 'kill', running_pid])
+
     app.debug = True
     app.run(host='0.0.0.0', port=8080)
 
