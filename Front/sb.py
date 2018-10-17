@@ -61,6 +61,7 @@ def set_pattern():
             # LEDすべてOFF
             led.off()
         elif request_pattern == 'allwhite':
+            led.off()
             led.on()
             led.show()
         else:
