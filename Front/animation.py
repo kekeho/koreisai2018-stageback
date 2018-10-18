@@ -223,56 +223,61 @@ if argc >= 3:
 
 print('ANIMATION:', pattern, option1, option2)
 
-if pattern == 'Default':
-    default(led)
+try:
+    if pattern == 'Default':
+        default(led)
 
-if pattern == 'Blink':
-    # 全体点滅アニメーション
-    animation_blink(led, speed=option1, hexcolor=option2)
+    if pattern == 'Blink':
+        # 全体点滅アニメーション
+        animation_blink(led, speed=option1, hexcolor=option2)
 
-if pattern == 'Alternately Blink':
-    animation_alternating_flashing(led, speed=option1, hexcolor=option2)
+    if pattern == 'Alternately Blink':
+        animation_alternating_flashing(led, speed=option1, hexcolor=option2)
 
-if pattern == 'Rainbow':
-    animation_rainbow(led)
+    if pattern == 'Rainbow':
+        animation_rainbow(led)
 
-if pattern == 'Rainbow Animation':
-    animation_rainbow_flow(led, speed=option1)
+    if pattern == 'Rainbow Animation':
+        animation_rainbow_flow(led, speed=option1)
 
-if pattern == 'Advance':
-    animation_flow(led, speed=option1, hexcolor=option2)
+    if pattern == 'Advance':
+        animation_flow(led, speed=option1, hexcolor=option2)
 
-if pattern == 'Pain':
-    pain(led, hexcolor=option2)
+    if pattern == 'Pain':
+        pain(led, hexcolor=option2)
 
 
-if pattern == 'P':
-    animation_round(led, 'P', speed=option1, hexcolor=option2)
+    if pattern == 'P':
+        animation_round(led, 'P', speed=option1, hexcolor=option2)
 
-if pattern == 'a':
-    animation_round(led, 'a', speed=option1, hexcolor=option2)
+    if pattern == 'a':
+        animation_round(led, 'a', speed=option1, hexcolor=option2)
 
-if pattern == 'i':
+    if pattern == 'i':
+        led.off()
+        string(led, hexcolor=option2, char='i')
+        led.show()
+
+    if pattern == 'n':
+        led.off()
+        string(led, hexcolor=option2, char='n')
+        led.show()
+
+    if pattern == 't':
+        led.off()
+        string(led, hexcolor=option2, char='t')
+        led.show()
+
+    if pattern == 'e':
+        led.off()
+        string(led, hexcolor=option2, char='e')
+        led.show()
+
+    if pattern == 'r':
+        led.off()
+        string(led, hexcolor=option2, char='r')
+        led.show()
+
+except Exception:
+    print('CLEAR')
     led.off()
-    string(led, hexcolor=option2, char='i')
-    led.show()
-
-if pattern == 'n':
-    led.off()
-    string(led, hexcolor=option2, char='n')
-    led.show()
-
-if pattern == 't':
-    led.off()
-    string(led, hexcolor=option2, char='t')
-    led.show()
-
-if pattern == 'e':
-    led.off()
-    string(led, hexcolor=option2, char='e')
-    led.show()
-
-if pattern == 'r':
-    led.off()
-    string(led, hexcolor=option2, char='r')
-    led.show()
