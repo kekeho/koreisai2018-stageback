@@ -16,7 +16,9 @@ led = LEDObject()
 
 @app.route('/')
 def index():
-    return render_template('index.html', now_pattern=now_pattern, pattern_list=pattern_list, pattern_length_div_by_3_int=int(len(pattern_list) / 3))
+    return render_template('index.html', now_pattern=now_pattern, pattern_list=pattern_list, 
+                            pattern_length_div_by_3_int=int(len(pattern_list) / 3),
+                            color_list=color_list, color_length_div_by_3_int=int(len(color_list)/3))
 
 
 @app.route('/set', methods=['POST'])
