@@ -16,7 +16,7 @@ pattern_list = ['Blink',
 
 speed_list = ['1x', '2x', '4x', '8x', '16x']
 
-color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua', 'rainbow']
+color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua', 'darkorange', 'lime', 'rainbow']
 
 led = LEDObject()
 
