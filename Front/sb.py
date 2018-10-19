@@ -70,5 +70,6 @@ if __name__ == '__main__':
     try:
         led.off()
         main()
-    except Exception:
+    except KeyboardInterrupt:
         led.off()
+        exit()
