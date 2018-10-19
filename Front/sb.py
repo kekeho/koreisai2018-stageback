@@ -67,9 +67,4 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        led.off()
-        main()
-    except KeyboardInterrupt:
-        led.off()
-        exit()
+    main()
