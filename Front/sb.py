@@ -6,8 +6,8 @@ from matplotlib import colors
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder='./templates/assets')
-pattern_list = ['blink', 'hoge', 'fuga', 'nyan', 'kiee']
-color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua', 'darkorange', 'lime']
+pattern_list = ['MONOCOLOR']
+color_list = ['white', 'red', 'green', 'blue', 'yellow', 'hotpink', 'aqua', 'darkorange', 'lime', 'rainbow']
 
 now_color_button = 'white'
 now_pattern = ' '
@@ -33,18 +33,29 @@ def set_pattern():
     if request_pattern:
         if request_pattern[0] == 'clear':
             # LEDすべてOFF
-            led.off()
+            led.brightness(0)
+
+        elif request_pattern[0] == 'max_brightness':
+            led.brightness(255)
+
         elif request_pattern[0] == 'MONOCOLOR':
             now_pattern = request_pattern[0]
-            hexcolor = colors.cnames[now_color_button][1:].lower()
-            led.color(hexcolor)
-            print('SET PTN')
+            if now_color_button == 'rainbow':
+                led.on_rainbow(30)
+            else:
+                hexcolor = colors.cnames[now_color_button][1:].lower()
+                led.color(hexcolor)
+                print('SET PTN')
+            led.show()
 
     elif request_color:
         now_color_button = request_color[0]
-        hexcolor = colors.cnames[now_color_button][1:].lower()
-        led.color(hexcolor)
-        print('SET COL')
+        if request_color[0] == 'rainbow':
+            led.on_rainbow(30)
+        else:
+            hexcolor = colors.cnames[now_color_button][1:].lower()
+            led.color(hexcolor)
+            led.show()
 
     # TODO: 余裕があれば、実際にRaspberry Pi側から完了信号が届いてからnow_patternを更新
     return redirect('/')
@@ -56,4 +67,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        led.off()
+        main()
+    except Exception:
+        led.off()

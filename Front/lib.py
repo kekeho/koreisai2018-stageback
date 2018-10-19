@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import argparse
+import colorsys
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 # set include path to openPurikura directory
 sys.path.append(CURRENT_DIRNAME + '/../lib/python')
@@ -51,6 +52,7 @@ class LEDObject():
             LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA,
             LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         self.strip.begin()
+        self.num_pixels = self.strip.numPixels()
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
@@ -60,7 +62,14 @@ class LEDObject():
     def off(self):
         """"turn all LED OFF"""
         self.color('000000')
-        self.now_status = 'on'
+        self.show()
+        self.now_status = 'off'
+
+
+    def brightness(self, value: int):
+        self.strip.setBrightness(value)
+        self.show()
+
 
     def color(self, hex_color: str, *position: int):
         """set LED color with hex (RGB)
@@ -73,15 +82,37 @@ class LEDObject():
             # turn to this color only 1 pixel
             self.strip.setPixelColor(position[0], color)
             self.now_color[position[0]] = int_to_hexcolor(color, 'lib')
-            print(self.now_color) #debug
         else:
             self.now_color = [] #リセット
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, color)
                 self.now_color.append(int_to_hexcolor(color, 'lib'))
+        
+    
+    def show(self):
         self.strip.show()
         self.now_status = 'on'
-        print(self.now_color) #debug
+
+
+    def on_rainbow(self, circle_width: int):
+        # set rainbow
+        for i in range(0, self.num_pixels, circle_width):
+            for j in range(0, circle_width):
+                if i + j >= self.num_pixels:
+                    break
+
+                h = 1 / circle_width * j
+                r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
+                hex_rgb = [hex(int(r * 255)).split('0x')[-1], hex(int(g * 255)
+                                                                ).split('0x')[-1], hex(int(b * 255)).split('0x')[-1]]
+                hexcolor = ''
+                for color in hex_rgb:
+                    if len(color) == 1:
+                        color = '0' + color
+                    hexcolor += color
+                self.color(hexcolor, i + j)
+        self.show()
+
 
     def animation(self, pattern: str):
         """set animation
