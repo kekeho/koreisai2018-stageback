@@ -9,7 +9,7 @@ sys.path.append(CURRENT_DIRNAME + '/../lib/python')
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 1092      # Number of LED pixels.
+LED_COUNT = 1069-32      # Number of LED pixels.
 LED_PIN = 12      # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -53,6 +53,10 @@ class LEDObject():
             LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         self.strip.begin()
         self.num_pixels = self.strip.numPixels()
+        self.painter = {'P': range(0, 192), 'a': range(192, 385-32),
+                        'i': range(385-32, 496-32), 'n': range(496-32, 656-32),
+                        't': range(656-32, 774-32), 'e': range(774-32, 962-32),
+                        'r': range(962-32, 1069-32)}
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
@@ -71,17 +75,18 @@ class LEDObject():
         self.show()
 
 
-    def color(self, hex_color: str, *position: int):
+    def color(self, hex_color: str, position=None):
         """set LED color with hex (RGB)
         default: ALL LEDs color turns hex value
         if you set potition, only a LED in the position turns hex value"""
+
         color = Color(int(hex_color[2:4], base=16),
                       int(hex_color[:2], base=16),
                       int(hex_color[4:6], base=16))
-        if(position):
+        if position:
             # turn to this color only 1 pixel
-            self.strip.setPixelColor(position[0], color)
-            self.now_color[position[0]] = int_to_hexcolor(color, 'lib')
+            self.strip.setPixelColor(position, color)
+            self.now_color[position] = int_to_hexcolor(color, 'lib')
         else:
             self.now_color = [] #リセット
             for i in range(self.strip.numPixels()):
@@ -112,6 +117,30 @@ class LEDObject():
                     hexcolor += color
                 self.color(hexcolor, i + j)
         self.show()
+
+
+    def default_color(self):
+        painter_color = ['ff8200', '5555ff', '1fff00',
+                     'fff400', 'ff00d2', '0029ff', 'ff1010']
+        for hexcolor, char in zip(painter_color, 'Painter'):
+            self.set_char(hexcolor, char)
+        self.show()
+
+
+    def set_char(self, hexcolor: str, char: str):
+        """
+        set color only single char
+        warning: this method does not clear other pixel
+        """
+        if len(char) != 1:
+            raise ValueError
+
+        if hexcolor == None:
+            hexcolor = 'ffffff'
+
+        for i in self.painter[char]:
+            self.color(hexcolor, position=i)
+
 
 
     def animation(self, pattern: str):

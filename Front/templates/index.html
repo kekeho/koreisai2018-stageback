@@ -19,10 +19,12 @@
     <div class="container indicator">
         <div class="row">
             <div class="col now">
-                {% if now_pattern %}
-                    <h1>NOW: {{now_pattern}}</h1>
+                {% if now_pattern and now_color and now_brightness %}
+                    <h1>Ptn: {{now_pattern}}</h1><br>
+                    <h1>Col: {{now_color}}</h1><br>
+                    <h1>Brt: {{now_brightness}}</h1>
                 {% else %}
-                    <h1>NOW: ERROR_バグが発生しました</h1>
+                    <h1>ERROR_表示にバグが発生しました</h1>
                 {% endif %}
             </div>
         </div>
