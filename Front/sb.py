@@ -46,7 +46,7 @@ def set_pattern():
         elif request_pattern[0] == 'MONOCOLOR':
             now_pattern = request_pattern[0]
             if now_color_button == 'rainbow':
-                led.on_rainbow(30)
+                led.on_rainbow(70)
             elif now_color_button == 'default':
                 led.default_color()
             else:
@@ -58,7 +58,7 @@ def set_pattern():
     elif request_color:
         now_color_button = request_color[0]
         if request_color[0] == 'rainbow':
-            led.on_rainbow(30)
+            led.on_rainbow(70)
 
         elif request_color[0] == 'default':
             led.default_color()
