@@ -42,7 +42,7 @@ def animation_blink(led: LEDObject, speed: int, hexcolor: str):
             time.sleep(sleepsec / speed)
 
 
-def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, dist=3):
+def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, dist=6):
     if speed == None:
         speed = 1
     if hexcolor == None:
@@ -78,7 +78,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
         time.sleep(sleepsec / speed)
 
 
-def animation_rainbow(led: LEDObject, circle_width=50):
+def animation_rainbow(led: LEDObject, circle_width=60):
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -86,7 +86,6 @@ def animation_rainbow(led: LEDObject, circle_width=50):
                 break
 
             h = 1 / circle_width * j
-            print('h', h)
             r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
             hex_rgb = [hex(int(r * 255)).split('0x')[-1], hex(int(g * 255)
                                                               ).split('0x')[-1], hex(int(b * 255)).split('0x')[-1]]
@@ -96,17 +95,16 @@ def animation_rainbow(led: LEDObject, circle_width=50):
                     color = '0' + color
                 hexcolor += color
 
-            print(hexcolor)
             led.color(hexcolor, i + j)
     led.show()
 
 
-def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
+def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=60):
     if speed == None:
         speed = 1
 
     """Draw rainbow that uniformly distributes itself across all pixels."""
-    sleepsec = 0.1
+    sleepsec = 0.01
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -114,7 +112,6 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
                 break
 
             h = 1 / circle_width * j
-            print('h', h)
             r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
             hex_rgb = [hex(int(r * 255)).split('0x')[-1], hex(int(g * 255)
                                                               ).split('0x')[-1], hex(int(b * 255)).split('0x')[-1]]
@@ -124,7 +121,6 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
                     color = '0' + color
                 hexcolor += color
 
-            print(hexcolor)
             led.color(hexcolor, i + j)
     while True:
         led.show()

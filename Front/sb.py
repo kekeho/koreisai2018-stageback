@@ -40,7 +40,6 @@ def set_pattern():
         print('KILL PROCESS') #debug
         led.running_pipe = None
 
-    led.off()
     
     print(request.form.getlist('pattern'))
 
