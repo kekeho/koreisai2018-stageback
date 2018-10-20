@@ -19,10 +19,12 @@
     <div class="container indicator">
         <div class="row">
             <div class="col now">
-                {% if now_pattern %}
-                    <h1>NOW: {{now_pattern}} / {{now_speed}} / {{now_color}}</h1>
+                {% if now_pattern and now_color and now_brightness %}
+                    <h1>Ptn: {{now_pattern}}</h1><br>
+                    <h1>Col: {{now_color}}</h1><br>
+                    <h1>Brt: {{now_brightness}}</h1>
                 {% else %}
-                    <h1>NOW: ERROR_バグが発生しました</h1>
+                    <h1>ERROR_表示にバグが発生しました</h1>
                 {% endif %}
             </div>
         </div>
@@ -33,15 +35,15 @@
                 <form method="post" action="/set" name="form_clear">
                     <input class="form-control" type="hidden" name="pattern" value="clear">
                     <a href="javascript:form_clear.submit()">
-                        <button class="btn btn-primary btn-pattern important" type="button">ALL CLEAR</button>
+                        <button class="btn btn-primary btn-pattern important" type="button">ZERO BRIGHTNESS</button>
                     </a>
                 </form>
             </div>
             <div class="col item-box">
                 <form method="post" action="/set" name="form_allwhite">
-                    <input class="form-control" type="hidden" name="pattern" value="allwhite">
+                    <input class="form-control" type="hidden" name="pattern" value="max_brightness">
                     <a href="javascript:form_allwhite.submit()">
-                        <button class="btn btn-primary btn-pattern important" type="button">ALL WHITE</button>
+                        <button class="btn btn-primary btn-pattern important" type="button">MAX BRIGHTNESS</button>
                     </a>
                 </form>
             </div>
@@ -65,13 +67,14 @@
             </div>
         </div>
         {% if pattern_list %}
+            <h1>Pattern</h1>
             {% for i in range(0, pattern_length_div_by_3_int+1) %}
                 <div class="row items-row">
                 {% for j in range(0, 3) %}
                     <div class="col item-box">
-                        <form method="post" action="/set" name="form{{i*3+j}}">
+                        <form method="post" action="/set" name="form_pattern{{i*3+j}}">
                             <input class="form-control" type="hidden" name="pattern" value="{{pattern_list[i*3+j]}}">
-                            <a href="javascript:form{{i*3+j}}.submit()" class="submit-button-link">
+                            <a href="javascript:form_pattern{{i*3+j}}.submit()" class="submit-button-link">
                                 {% if pattern_list[i*3+j] %}
                                     <button class="btn btn-primary btn-pattern btn-gray {{pattern_list[i*3+j]}}" type="button">{{pattern_list[i*3+j]}}</button>
                                 {% endif %}
@@ -139,6 +142,29 @@
         {% else %}
             <h1>ERROR バグが発生しました</h1>
         {% endif %}
+
+        {% if color_list %}
+            <h1>Color</h1>
+            {% for i in range(0, color_length_div_by_3_int+1) %}
+                <div class="row items-row">
+                {% for j in range(0, 3) %}
+                    <div class="col item-box">
+                        <form method="post" action="/set" name="form_color{{i*3+j}}">
+                            <input class="form-control" type="hidden" name="color" value="{{color_list[i*3+j]}}">
+                            <a href="javascript:form_color{{i*3+j}}.submit()" class="submit-button-link">
+                                {% if color_list[i*3+j] %}
+                                    <button class="btn btn-primary btn-pattern btn-gray" type="button">{{color_list[i*3+j]}}</button>
+                                {% endif %}
+                            </a>
+                        </form>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}  
+        {% else %}
+            <h1>ERROR バグが発生しました</h1>
+        {% endif %}
+        
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

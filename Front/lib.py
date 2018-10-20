@@ -2,13 +2,13 @@ import sys
 import os
 import time
 import argparse
-import subprocess
+import colorsys
 CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(CURRENT_DIRNAME + '/../lib/python')
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 1093      # Number of LED pixels.
+LED_COUNT = 1069-32      # Number of LED pixels.
 LED_PIN = 12      # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -65,6 +65,11 @@ class LEDObject():
 
         self.running_pipe = None
         self.strip.begin()
+        self.num_pixels = self.strip.numPixels()
+        self.painter = {'P': range(0, 192), 'a': range(192, 385-32),
+                        'i': range(385-32, 496-32), 'n': range(496-32, 656-32),
+                        't': range(656-32, 774-32), 'e': range(774-32, 962-32),
+                        'r': range(962-32, 1069-32)}
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
@@ -75,7 +80,13 @@ class LEDObject():
         """"turn all LED OFF"""
         self.color('000000')
         self.show()
-        self.now_status = 'on'
+        self.now_status = 'off'
+
+
+    def brightness(self, value: int):
+        self.strip.setBrightness(value)
+        self.show()
+
 
     def color(self, hex_color: str, position=None):
         """set LED color with hex (RGB)
@@ -85,7 +96,7 @@ class LEDObject():
         color = Color(int(hex_color[2:4], base=16),
                       int(hex_color[:2], base=16),
                       int(hex_color[4:6], base=16))
-        if position != None:
+        if position:
             # turn to this color only 1 pixel
             self.strip.setPixelColor(position, color)
             self.now_color[position] = int_to_hexcolor(color, 'lib')
@@ -94,10 +105,56 @@ class LEDObject():
             for i in range(self.strip.numPixels()):
                 self.strip.setPixelColor(i, color)
                 self.now_color.append(int_to_hexcolor(color, 'lib'))
-
+        
+    
     def show(self):
         self.strip.show()
         self.now_status = 'on'
+
+
+    def on_rainbow(self, circle_width: int):
+        # set rainbow
+        for i in range(0, self.num_pixels, circle_width):
+            for j in range(0, circle_width):
+                if i + j >= self.num_pixels:
+                    break
+
+                h = 1 / circle_width * j
+                r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
+                hex_rgb = [hex(int(r * 255)).split('0x')[-1], hex(int(g * 255)
+                                                                ).split('0x')[-1], hex(int(b * 255)).split('0x')[-1]]
+                hexcolor = ''
+                for color in hex_rgb:
+                    if len(color) == 1:
+                        color = '0' + color
+                    hexcolor += color
+                self.color(hexcolor, i + j)
+        self.show()
+
+
+    def default_color(self):
+        painter_color = ['ff8200', '5555ff', '1fff00',
+                     'fff400', 'ff00d2', '0029ff', 'ff1010']
+        for hexcolor, char in zip(painter_color, 'Painter'):
+            self.set_char(hexcolor, char)
+        self.show()
+
+
+    def set_char(self, hexcolor: str, char: str):
+        """
+        set color only single char
+        warning: this method does not clear other pixel
+        """
+        if len(char) != 1:
+            raise ValueError
+
+        if hexcolor == None:
+            hexcolor = 'ffffff'
+
+        for i in self.painter[char]:
+            self.color(hexcolor, position=i)
+
+
 
     def get_now_color(self):
         color_list = []
@@ -116,49 +173,11 @@ class LEDObject():
         option1=Speed
         option2=Color
         """
-        print('in the animation')  # debug
-        print(pattern, option1, option2)
-        if option1 and option2:
-            self.running_pipe = subprocess.Popen(
-                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1=' + option1, 'option2=' + option2])
-        elif option1:
-            self.running_pipe = subprocess.Popen(
-                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option1=' + option1])
-        elif option2:
-            self.running_pipe = subprocess.Popen(
-                ['python3', CURRENT_DIRNAME + '/animation.py', pattern, 'option2=' + option2])
-        else:
-            self.running_pipe = subprocess.Popen(
-                ['python3', CURRENT_DIRNAME + '/animation.py', pattern])
+        pass
+        # if pattern is 'blink':
+        #     led.off
 
-        self.now_status = 'on'
-
-
-def round(char: str):
-    if len(char) != 1:
-        raise ValueError
-
-    if char == 'P':
-        P = [list(range(145, 148)) + list(range(0, 4))]
-        for i, j in zip(range(125, 145)[::-1], range(4, 24)):
-            P.append([i, j])
-        for i in range(116, 125)[::-1]:
-            P.append([i])
-        for i, j in zip(range(99, 116)[::-1], list(range(193, 203))+list(range(148, 155))):
-            P.append([i, j])
-        for i in range(86, 99)[::-1]:
-            P.append([i])
-
-        previous_j = None
-        for i in range(24, 86)[::-1]:
-            j = int(155 + (193-155) / (86-24) * (-1*i + 86))
-            if previous_j == j:
-                P.append([i])
-            else:
-                previous_j = j
-                P.append([i, j])
-        return P
-
+        # self.now_status = 'on'
 
 
 def main():
