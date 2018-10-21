@@ -109,7 +109,6 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=60):
         speed = 1
 
     """Draw rainbow that uniformly distributes itself across all pixels."""
-    sleepsec = 0.01
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -129,8 +128,7 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=60):
             led.color(hexcolor, i + j)
     while True:
         led.show()
-        time.sleep(sleepsec / speed**2)
-        led.pixel_shift()
+        led.pixel_shift(pixel_num=speed)
 
 
 def animation_flow(led: LEDObject, speed: int, hexcolor: str, block=2):
@@ -202,6 +200,35 @@ def animation_round(led: LEDObject, char: str,speed: int, hexcolor: str):
     led.show()
 
 
+def rainbow_long(led: LEDObject, iterations=10, speed=1):
+    """Draw rainbow that uniformly distributes itself across all pixels."""
+    for j in range(256*iterations):
+        for i in range(led.num_pixels):
+            led.strip.setPixelColor(i, wheel((int(i * 256 / led.num_pixels) + j) & 255))
+        led.show()
+        time.sleep(0.0001 / speed**2)
+
+
+def wheel(pos):
+    """Generate rainbow colors across 0-255 positions."""
+    if pos < 85:
+        return Color(pos * 3, 255 - pos * 3, 0)
+    elif pos < 170:
+        pos -= 85
+        return Color(255 - pos * 3, 0, pos * 3)
+    else:
+        pos -= 170
+        return Color(0, pos * 3, 255 - pos * 3)
+
+
+def Color(red, green, blue, white = 0):
+	"""Convert the provided red, green, blue color to a 24-bit color value.
+	Each color component should be a value 0-255 where 0 is the lowest intensity
+	and 255 is the highest intensity.
+	"""
+	return (white << 24) | (red << 16)| (green << 8) | blue
+
+
 led = LEDObject()
 argc = len(sys.argv)
 
@@ -243,6 +270,9 @@ try:
 
     if pattern == 'Rainbow Animation':
         animation_rainbow_flow(led, speed=option1)
+
+    if pattern == 'Rainbow Long':
+        rainbow_long(led, speed=option1)
 
     if pattern == 'Advance':
         animation_flow(led, speed=option1, hexcolor=option2)
@@ -286,6 +316,6 @@ try:
         string(led, hexcolor=option2, char='r')
         led.show()
 
-except Exception:
-    print('CLEAR')
+except Exception as e:
+    print(e)
     led.off()

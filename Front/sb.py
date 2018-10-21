@@ -9,7 +9,7 @@ CURRENT_DIRNAME = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder='./templates/assets')
 pattern_list = ['Blink',
                 'Alternately Blink',
-                'Rainbow', 'Rainbow Animation',
+                'Rainbow', 'Rainbow Animation', 'Rainbow Long',
                 'Advance',
                 'Pain',
                 'P', 'a', 'i', 'n', 't', 'e', 'r']
@@ -118,8 +118,8 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except:
-        print(CLEAR)
+    except Exception as e:
+        print(e)
         led.off()
         if led.running_pipe:
             led.running_pipe.kill()

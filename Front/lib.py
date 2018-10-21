@@ -106,8 +106,9 @@ class LEDObject():
             color_list.append(int_to_hexcolor(libcolor, 'lib'))
         return color_list
 
-    def pixel_shift(self):
-        self.now_color.insert(0, self.now_color.pop())
+    def pixel_shift(self, pixel_num=1):
+        for i in range(pixel_num):
+            self.now_color.insert(0, self.now_color.pop())
         for i, hexcolor in enumerate(self.now_color):
             self.color(hexcolor, i)
 
