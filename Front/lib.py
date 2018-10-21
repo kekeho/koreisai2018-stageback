@@ -112,6 +112,10 @@ class LEDObject():
         for i, hexcolor in enumerate(self.now_color):
             self.color(hexcolor, i)
 
+    def brightbess(self, value: int):
+        self.strip.setBrightness(value)
+        self.show()
+
     def animation(self, pattern: str, option1=None, option2=None):
         """set animation
         option1=Speed
