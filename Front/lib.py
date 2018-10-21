@@ -8,7 +8,7 @@ sys.path.append(CURRENT_DIRNAME + '/../lib/python')
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 1093      # Number of LED pixels.
+LED_COUNT = 1069-31      # Number of LED pixels.
 LED_PIN = 12      # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -54,10 +54,10 @@ class LEDObject():
         self.now_speed = '1x'
         self.now_color_button = 'white'
 
-        self.painter = {'P': range(0, 203), 'a': range(203, 396),
-                        'i': range(396, 510), 'n': range(510, 677),
-                        't': range(677, 795), 'e': range(795, 986),
-                        'r': range(986, 1093)}
+        self.painter = {'P': range(0, 192), 'a': range(192, 385-31),
+                        'i': range(385-31, 496-31), 'n': range(496-31, 656-31),
+                        't': range(656-31, 774-31), 'e': range(774-31, 962-31),
+                        'r': range(962-31, 1069-31)}
 
         self.round_painter = {'P': round('P'), 'a': round('a')
 

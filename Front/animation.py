@@ -99,6 +99,11 @@ def animation_rainbow(led: LEDObject, circle_width=60):
     led.show()
 
 
+def static(led: LEDObject, hexcolor):
+    led.color(hexcolor)
+    led.show()
+
+
 def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=60):
     if speed == None:
         speed = 1
@@ -220,6 +225,9 @@ if argc >= 3:
 print('ANIMATION:', pattern, option1, option2)
 
 try:
+    if pattern == 'static':
+        static(led, hexcolor=option2)
+
     if pattern == 'Default':
         default(led)
 
@@ -244,10 +252,14 @@ try:
 
 
     if pattern == 'P':
-        animation_round(led, 'P', speed=option1, hexcolor=option2)
+        led.off()
+        string(led, hexcolor=option2, char='P')
+        led.show()
 
     if pattern == 'a':
-        animation_round(led, 'a', speed=option1, hexcolor=option2)
+        led.off()
+        string(led, hexcolor=option2, char='a')
+        led.show()
 
     if pattern == 'i':
         led.off()

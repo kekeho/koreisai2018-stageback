@@ -63,9 +63,6 @@ def set_pattern():
         if request_pattern == 'clear':
             # LEDすべてOFF
             led.off()
-        elif request_pattern == 'allwhite':
-            led.on()
-            led.show()
         else:
             if led.now_color_button == 'rainbow':
                 led.animation(request_pattern, option1=led.now_speed, option2=led.now_color_button)
