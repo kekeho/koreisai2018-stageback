@@ -8,7 +8,7 @@ sys.path.append(CURRENT_DIRNAME + '/../lib/python')
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 1069-32      # Number of LED pixels.
+LED_COUNT = 1069-31      # Number of LED pixels.
 LED_PIN = 12      # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -54,22 +54,13 @@ class LEDObject():
         self.now_speed = '1x'
         self.now_color_button = 'white'
 
-        self.painter = {'P': range(0, 203), 'a': range(203, 396),
-                        'i': range(396, 510), 'n': range(510, 677),
-                        't': range(677, 795), 'e': range(795, 986),
-                        'r': range(986, 1093)}
-
-        self.round_painter = {'P': round('P'), 'a': round('a')
-
-        }
-
         self.running_pipe = None
         self.strip.begin()
         self.num_pixels = self.strip.numPixels()
-        self.painter = {'P': range(0, 192), 'a': range(192, 385-32),
-                        'i': range(385-32, 496-32), 'n': range(496-32, 656-32),
-                        't': range(656-32, 774-32), 'e': range(774-32, 962-32),
-                        'r': range(962-32, 1069-32)}
+        self.painter = {'P': range(0, 192), 'a': range(192, 385-31),
+                        'i': range(385-31, 496-31), 'n': range(496-31, 656-31),
+                        't': range(656-31, 774-31), 'e': range(774-31, 962-31),
+                        'r': range(962-31, 1069-31)}
 
     def on(self):
         """turn all LED ON (WHITE/0xffffff)"""
@@ -133,8 +124,8 @@ class LEDObject():
 
 
     def default_color(self):
-        painter_color = ['ff8200', '5555ff', '1fff00',
-                     'fff400', 'ff00d2', '0029ff', 'ff1010']
+        painter_color = ['ff0505', 'ff6a00', 'ffe800',
+                     '05ff05', '00d6ff', '0505ff', 'd800ff']
         for hexcolor, char in zip(painter_color, 'Painter'):
             self.set_char(hexcolor, char)
         self.show()

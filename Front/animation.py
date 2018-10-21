@@ -8,8 +8,8 @@ from lib import LEDObject
 
 
 def default(led: LEDObject):
-    painter_color = ['ff8200', '5555ff', '1fff00',
-                     'fff400', 'ff00d2', '0029ff', 'ff1010']
+    painter_color = ['ff0505', '#ff9400', 'ffe800',
+                     '0505ff', '#00d6ff', '0505ff', 'd800ff']
     for hexcolor, char in zip(painter_color, 'Painter'):
         string(led, hexcolor, char)
     led.show()
