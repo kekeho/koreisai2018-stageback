@@ -54,6 +54,15 @@ class LEDObject():
         self.now_speed = '1x'
         self.now_color_button = 'white'
 
+        self.painter = {'P': range(0, 192), 'a': range(192, 385-31),
+                        'i': range(385-31, 496-31), 'n': range(496-31, 656-31),
+                        't': range(656-31, 774-31), 'e': range(774-31, 962-31),
+                        'r': range(962-31, 1069-31)}
+
+        self.round_painter = {'P': round('P'), 'a': round('a')
+
+        }
+
         self.running_pipe = None
         self.strip.begin()
         self.num_pixels = self.strip.numPixels()
@@ -154,10 +163,15 @@ class LEDObject():
             color_list.append(int_to_hexcolor(libcolor, 'lib'))
         return color_list
 
-    def pixel_shift(self):
-        self.now_color.insert(0, self.now_color.pop())
+    def pixel_shift(self, pixel_num=1):
+        for i in range(pixel_num):
+            self.now_color.insert(0, self.now_color.pop())
         for i, hexcolor in enumerate(self.now_color):
             self.color(hexcolor, i)
+
+    def brightbess(self, value: int):
+        self.strip.setBrightness(value)
+        self.show()
 
     def animation(self, pattern: str, option1=None, option2=None):
         """set animation

@@ -17,7 +17,7 @@ def default(led: LEDObject):
 
 def animation_blink(led: LEDObject, speed: int, hexcolor: str):
     if speed == None:
-        speed = 1
+        speed = 16
     if hexcolor == None:
         hexcolor = 'ffffff'
     sleepsec = 0.2
@@ -26,23 +26,31 @@ def animation_blink(led: LEDObject, speed: int, hexcolor: str):
         animation_rainbow(led)
         color_list = led.get_now_color()
         while True:
+            # set rainbow
             for i, color in enumerate(color_list):
                 led.color(color, position=i)
-            led.show()
-            time.sleep(sleepsec / speed)
-            led.off()
-            time.sleep(sleepsec / speed)
+
+            # change brightness
+            for brightness in range(0, 256, 17-speed):
+                led.brightbess(brightness)
+                time.sleep(0.01)
+            for brightness in list(range(0, 256, 17-speed))[::-1]:
+                led.brightbess(brightness)
+                time.sleep(0.001)
+
     else:
         while True:
             led.color(hexcolor)
-            led.show()
-            time.sleep(sleepsec / speed)
+            # change brightness
+            for brightness in range(0, 256, 17-speed):
+                led.brightbess(brightness)
+                time.sleep(0.001)
+            for brightness in list(range(0, 256, 17-speed))[::-1]:
+                led.brightbess(brightness)
+                time.sleep(0.0001)
 
-            led.off()
-            time.sleep(sleepsec / speed)
 
-
-def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, dist=3):
+def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, dist=6):
     if speed == None:
         speed = 1
     if hexcolor == None:
@@ -78,7 +86,7 @@ def animation_alternating_flashing(led: LEDObject, speed: int, hexcolor: str, di
         time.sleep(sleepsec / speed)
 
 
-def animation_rainbow(led: LEDObject, circle_width=50):
+def animation_rainbow(led: LEDObject, circle_width=60):
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -86,7 +94,6 @@ def animation_rainbow(led: LEDObject, circle_width=50):
                 break
 
             h = 1 / circle_width * j
-            print('h', h)
             r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
             hex_rgb = [hex(int(r * 255)).split('0x')[-1], hex(int(g * 255)
                                                               ).split('0x')[-1], hex(int(b * 255)).split('0x')[-1]]
@@ -96,17 +103,20 @@ def animation_rainbow(led: LEDObject, circle_width=50):
                     color = '0' + color
                 hexcolor += color
 
-            print(hexcolor)
             led.color(hexcolor, i + j)
     led.show()
 
 
-def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
+def static(led: LEDObject, hexcolor):
+    led.color(hexcolor)
+    led.show()
+
+
+def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=60):
     if speed == None:
         speed = 1
 
     """Draw rainbow that uniformly distributes itself across all pixels."""
-    sleepsec = 0.1
     # set rainbow
     for i in range(0, led.num_pixels, circle_width):
         for j in range(0, circle_width):
@@ -114,7 +124,6 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
                 break
 
             h = 1 / circle_width * j
-            print('h', h)
             r, g, b = colorsys.hsv_to_rgb(h, 1.0, 1.0)
             hex_rgb = [hex(int(r * 255)).split('0x')[-1], hex(int(g * 255)
                                                               ).split('0x')[-1], hex(int(b * 255)).split('0x')[-1]]
@@ -124,12 +133,10 @@ def animation_rainbow_flow(led: LEDObject, speed: int, circle_width=50):
                     color = '0' + color
                 hexcolor += color
 
-            print(hexcolor)
             led.color(hexcolor, i + j)
     while True:
         led.show()
-        time.sleep(sleepsec / speed**2)
-        led.pixel_shift()
+        led.pixel_shift(pixel_num=speed)
 
 
 def animation_flow(led: LEDObject, speed: int, hexcolor: str, block=2):
@@ -166,11 +173,19 @@ def string(led: LEDObject, hexcolor: str, char: str):
 def pain(led: LEDObject, hexcolor: str):
     if hexcolor == None:
         hexcolor = 'ff0000'
-    for char in 'Pain':
-        string(led, hexcolor, char)
-    for char in 'ter':
-        string(led, '000000', char)
-    led.show()
+
+    if hexcolor == 'rainbow':
+        animation_rainbow(led)
+        for char in 'ter':
+            string(led, '000000', char)
+        led.show()
+
+    else:
+        for char in 'Pain':
+            string(led, hexcolor, char)
+        for char in 'ter':
+            string(led, '000000', char)
+        led.show()
 
 
 def animation_round(led: LEDObject, char: str,speed: int, hexcolor: str):
@@ -191,6 +206,35 @@ def animation_round(led: LEDObject, char: str,speed: int, hexcolor: str):
             led.show()
             time.sleep(0.001/speed)
     led.show()
+
+
+def rainbow_long(led: LEDObject, iterations=10, speed=1):
+    """Draw rainbow that uniformly distributes itself across all pixels."""
+    for j in range(256*iterations):
+        for i in range(led.num_pixels):
+            led.strip.setPixelColor(i, wheel((int(i * 256 / led.num_pixels) + j) & 255))
+        led.show()
+        time.sleep(0.0001 / speed**2)
+
+
+def wheel(pos):
+    """Generate rainbow colors across 0-255 positions."""
+    if pos < 85:
+        return Color(pos * 3, 255 - pos * 3, 0)
+    elif pos < 170:
+        pos -= 85
+        return Color(255 - pos * 3, 0, pos * 3)
+    else:
+        pos -= 170
+        return Color(0, pos * 3, 255 - pos * 3)
+
+
+def Color(red, green, blue, white = 0):
+	"""Convert the provided red, green, blue color to a 24-bit color value.
+	Each color component should be a value 0-255 where 0 is the lowest intensity
+	and 255 is the highest intensity.
+	"""
+	return (white << 24) | (red << 16)| (green << 8) | blue
 
 
 led = LEDObject()
@@ -215,56 +259,71 @@ if argc >= 3:
 
 print('ANIMATION:', pattern, option1, option2)
 
-if pattern == 'Default':
-    default(led)
+try:
+    if pattern == 'static':
+        static(led, hexcolor=option2)
 
-if pattern == 'Blink':
-    # 全体点滅アニメーション
-    animation_blink(led, speed=option1, hexcolor=option2)
+    if pattern == 'Default':
+        default(led)
 
-if pattern == 'Alternately Blink':
-    animation_alternating_flashing(led, speed=option1, hexcolor=option2)
+    if pattern == 'Blink':
+        # 全体点滅アニメーション
+        animation_blink(led, speed=option1, hexcolor=option2)
 
-if pattern == 'Rainbow':
-    animation_rainbow(led)
+    if pattern == 'Alternately Blink':
+        animation_alternating_flashing(led, speed=option1, hexcolor=option2)
 
-if pattern == 'Rainbow Animation':
-    animation_rainbow_flow(led, speed=option1)
+    if pattern == 'Rainbow':
+        animation_rainbow(led)
 
-if pattern == 'Advance':
-    animation_flow(led, speed=option1, hexcolor=option2)
+    if pattern == 'Rainbow Animation':
+        animation_rainbow_flow(led, speed=option1)
 
-if pattern == 'Pain':
-    pain(led, hexcolor=option2)
+    if pattern == 'Rainbow Long':
+        rainbow_long(led, speed=option1)
+
+    if pattern == 'Advance':
+        animation_flow(led, speed=option1, hexcolor=option2)
+
+    if pattern == 'Pain':
+        pain(led, hexcolor=option2)
 
 
-if pattern == 'P':
-    animation_round(led, 'P', speed=option1, hexcolor=option2)
+    if pattern == 'P':
+        led.off()
+        string(led, hexcolor=option2, char='P')
+        led.show()
 
-if pattern == 'a':
-    animation_round(led, 'a', speed=option1, hexcolor=option2)
+    if pattern == 'a':
+        led.off()
+        string(led, hexcolor=option2, char='a')
+        led.show()
 
-if pattern == 'i':
+    if pattern == 'i':
+        led.off()
+        string(led, hexcolor=option2, char='i')
+        led.show()
+
+    if pattern == 'n':
+        led.off()
+        string(led, hexcolor=option2, char='n')
+        led.show()
+
+    if pattern == 't':
+        led.off()
+        string(led, hexcolor=option2, char='t')
+        led.show()
+
+    if pattern == 'e':
+        led.off()
+        string(led, hexcolor=option2, char='e')
+        led.show()
+
+    if pattern == 'r':
+        led.off()
+        string(led, hexcolor=option2, char='r')
+        led.show()
+
+except Exception as e:
+    print(e)
     led.off()
-    string(led, hexcolor=option2, char='i')
-    led.show()
-
-if pattern == 'n':
-    led.off()
-    string(led, hexcolor=option2, char='n')
-    led.show()
-
-if pattern == 't':
-    led.off()
-    string(led, hexcolor=option2, char='t')
-    led.show()
-
-if pattern == 'e':
-    led.off()
-    string(led, hexcolor=option2, char='e')
-    led.show()
-
-if pattern == 'r':
-    led.off()
-    string(led, hexcolor=option2, char='r')
-    led.show()
